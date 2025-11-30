@@ -1,7 +1,7 @@
 export default {
-  from: undefined,
+   from: undefined,
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
-};
+}
