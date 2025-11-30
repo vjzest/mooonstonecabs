@@ -24,7 +24,7 @@ import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogC
 import { apiRequest } from '@/lib/queryClient';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { insertBookingSchema } from '@shared/schema';
+import { insertBookingSchema } from '@shared/schemas-client';
 
 // Locations removed so users can manually enter pickup/drop locations
 
