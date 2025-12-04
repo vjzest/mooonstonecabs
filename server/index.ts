@@ -1,6 +1,12 @@
 import express, { type Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-dotenv.config({ path: "./server/.env" });
+// Load environment variables. Use default behaviour so the .env file
+// in the same folder as `index.ts` (server/.env) is loaded when the
+// process CWD is the server folder. The previous explicit path
+// './server/.env' could break when the process is already inside
+// the server folder (resulting in server/server/.env) and cause
+// missing env vars at startup (leading to runtime errors / 502s).
+dotenv.config();
 import mongoose from "mongoose";
 import cors from "cors";
 import { registerRoutes } from "./routes";
