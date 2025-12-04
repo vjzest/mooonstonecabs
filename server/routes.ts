@@ -677,6 +677,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug: list booking verification entries (protected)
+  app.get('/api/debug/booking-verifications', (req, res) => {
+    try {
+      // Allow in development or with DEBUG_KEY header
+      const key = req.headers['x-debug-key'];
+      if (process.env.NODE_ENV !== 'development' && process.env.DEBUG_KEY && key !== process.env.DEBUG_KEY) {
+        return res.status(403).json({ success: false, error: 'Forbidden' });
+      }
+
+      const list = Array.from(bookingVerifications.entries()).map(([email, v]) => ({
+        email,
+        code: (process.env.DEBUG_EMAILS === 'true') ? v.code : undefined,
+        expiresAt: v.expiresAt,
+        attempts: v.attempts,
+        verified: !!v.verified,
+      }));
+      res.json({ success: true, list });
+    } catch (err) {
+      console.error('Debug booking-verifications error:', err);
+      res.status(500).json({ success: false, error: 'Failed to list booking verifications' });
+    }
+  });
+
+  // Debug: reset booking verification for an email (protected)
+  app.post('/api/debug/booking-reset', (req, res) => {
+    try {
+      const key = req.headers['x-debug-key'];
+      if (process.env.NODE_ENV !== 'development' && process.env.DEBUG_KEY && key !== process.env.DEBUG_KEY) {
+        return res.status(403).json({ success: false, error: 'Forbidden' });
+      }
+
+      const email = (req.body && req.body.email) || req.query.email;
+      if (!email) return res.status(400).json({ success: false, error: 'email required' });
+      bookingVerifications.delete(String(email).toLowerCase());
+      res.json({ success: true, message: 'reset' });
+    } catch (err) {
+      console.error('Debug booking-reset error:', err);
+      res.status(500).json({ success: false, error: 'Failed to reset booking verification' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
