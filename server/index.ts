@@ -5,7 +5,7 @@ dotenv.config({ path: './server/.env' });
 import mongoose from 'mongoose';
 import cors from "cors";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+
 
 const app = express();
 
