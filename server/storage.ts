@@ -166,7 +166,7 @@ class MongoStorage implements IStorage {
       const existingCounter = await (counters as any).findOne({ _id: 'bookingSeq' });
       if (!existingCounter) {
         try {
-          await counters.insertOne({ _id: 'bookingSeq', seq: highestExisting });
+          await (counters as any).insertOne({ _id: 'bookingSeq', seq: highestExisting });
         } catch (e) {
           // Ignore duplicate key errors here — another process may have inserted concurrently.
         }

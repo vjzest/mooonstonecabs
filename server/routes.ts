@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { insertBookingSchema, insertAdminSchema, updateBookingStatusSchema, insertContactSchema, contactVerifySchema, contactConfirmSchema, bookingVerifySchema, bookingConfirmSchema } from "./shared-schema";
+import { insertBookingSchema, insertAdminSchema, updateBookingStatusSchema, insertContactSchema, contactVerifySchema, contactConfirmSchema, bookingVerifySchema, bookingConfirmSchema, type BookingStatus } from "./shared-schema";
 
 import { z } from "zod";
 import nodemailer from "nodemailer";
@@ -126,8 +126,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { bookingId } = req.params;
       const { status } = req.body;
 
-      const validatedData = updateBookingStatusSchema.parse({ bookingId, status });
-      const updatedBooking = await storage.updateBookingStatus(validatedData.bookingId, validatedData.status);
+  const validatedData = updateBookingStatusSchema.parse({ bookingId, status });
+  // validatedData.status is validated by zod but narrow typing can be lost; assert to BookingStatus
+  const updatedBooking = await storage.updateBookingStatus(validatedData.bookingId, validatedData.status as BookingStatus);
 
       if (!updatedBooking) {
         return res.status(404).json({ success: false, error: "Booking not found" });
@@ -204,7 +205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, booking: updatedBooking, message: "Status updated successfully" });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        return res.status(400).json({ success: false, error: "Invalid status", details: error.errors });
+          return res.status(400).json({ success: false, error: "Invalid status", details: error.issues });
       }
       console.error("Status update error:", error);
       res.status(500).json({ success: false, error: "Failed to update status" });
@@ -427,7 +428,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(400).json({
           success: false,
           error: "Validation failed",
-          details: error.errors,
+           details: error.issues,
         });
       } else {
         console.error("Booking creation error:", error);
@@ -484,7 +485,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(200).json({ success: true, message: 'Verification code sent to email', code: showCode ? code : undefined });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ success: false, error: 'Invalid contact data', details: err.errors });
+        return res.status(400).json({ success: false, error: 'Invalid contact data', details: (err as z.ZodError).issues });
       }
       console.error('Contact verify error:', err);
       res.status(500).json({ success: false, error: 'Failed to send verification code' });
@@ -552,7 +553,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json({ success: true, message: 'Contact request submitted and delivered.' });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ success: false, error: 'Invalid contact data', details: err.errors });
+        return res.status(400).json({ success: false, error: 'Invalid contact data', details: (err as z.ZodError).issues });
       }
       console.error('Contact confirm error:', err);
       res.status(500).json({ success: false, error: 'Failed to deliver contact message' });
@@ -595,7 +596,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, message: 'Verification code sent to email', code: showCode ? code : undefined });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ success: false, error: 'Invalid booking data', details: err.errors });
+        return res.status(400).json({ success: false, error: 'Invalid booking data', details: (err as z.ZodError).issues });
       }
       console.error('Booking verify error:', err);
       res.status(500).json({ success: false, error: 'Failed to send verification code' });
@@ -632,8 +633,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(200).json({ success: true, message: 'Email verified — you may submit the booking now.' });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        console.error('booking/confirm zod error:', err.errors);
-        return res.status(400).json({ success: false, error: 'Invalid booking data', details: err.errors });
+        console.error('booking/confirm zod error:', (err as z.ZodError).issues);
+        return res.status(400).json({ success: false, error: 'Invalid booking data', details: (err as z.ZodError).issues });
       }
       console.error('Booking confirm error:', err);
       res.status(500).json({ success: false, error: 'Failed to confirm booking' });
