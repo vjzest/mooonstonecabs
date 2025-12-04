@@ -74,7 +74,7 @@ export default function Contact() {
       <div>
         <p>contact@moonstonecabs.com</p>
         <p>booking@moonstonecabs.com</p>
-        <p>Sales@orangecabs.com</p>
+        <p>sales@moonstonecabs.com</p>
       </div>
     </div>
 
