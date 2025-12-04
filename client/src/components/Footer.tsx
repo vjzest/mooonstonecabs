@@ -8,34 +8,32 @@ const scrollToTop = () => {
 export default function Footer() {
   return (
     <footer
-      className=" text-white pt-20  overflow-hidden bg-center bg-no-repeat"
+      className="relative text-white pt-12 pb-8 overflow-hidden bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/assets/footer-bg.jpg')", // 👈 apni image path
+        backgroundImage: "url('/assets/footer-bg.jpg')",
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        margin: '0',
-        padding: '0',
       }}
     >
       {/* Dark Overlay for readability */}
-      <div className="absolute inset-0 "></div>
+      <div className="absolute inset-0 bg-black/55 pointer-events-none" aria-hidden="true" />
 
       {/* Footer Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-16 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 mb-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-8 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Company Info */}
-          <div>
-            <div className="text-2xl font-bold text-primary mb-4">
+          <div className="text-center sm:text-left">
+            <div className="text-2xl font-bold text-primary mb-3">
               MOONSTONE CABS
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-300 text-sm leading-relaxed max-w-md mx-auto sm:mx-0">
               Your trusted partner for luxury taxi services and car rentals in Delhi & NCR.
             </p>
           </div>
 
           
           {/* Useful Links */}
-          <div>
+          <div className="text-center sm:text-left">
             <h3 className="text-lg font-semibold mb-4">Useful Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -67,34 +65,34 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div >
+          <div className="text-center sm:text-left">
             <h3 className="text-lg font-semibold mb-4">Office Address</h3>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li className="flex  gap-2">
+            <ul className="space-y-3 text-sm text-gray-300">
+              <li className="flex flex-col sm:flex-row sm:items-start gap-2">
                 <MapPin className="w-5 h-5 flex-shrink-0 text-primary" />
-                <span >KH. NO. 45/18, Chhawla, Najafgarh, South West Delhi, New Delhi – 110043</span>
+                <span className="max-w-xs">KH. NO. 45/18, Chhawla, Najafgarh, South West Delhi, New Delhi – 110043</span>
               </li>
-              <li className="flex  gap-2">
-                <Mail className="w-5 h-5 flex-shrink-0 text-primary" />
-                <div className="flex flex-col gap-1">
-                  <a href="mailto:contact@moonstonecabs.com" className="hover:text-primary transition-colors">
+              <li className="flex gap-2 items-start">
+                <Mail className="w-5 h-5 flex-shrink-0 text-primary mt-1" />
+                <div className="flex flex-col gap-1 text-sm">
+                  <a href="mailto:contact@moonstonecabs.com" className="hover:text-primary transition-colors text-gray-300">
                     contact@moonstonecabs.com
                   </a>
-                  <a href="mailto:booking@moonstonecabs.com" className="hover:text-primary transition-colors">
+                  <a href="mailto:booking@moonstonecabs.com" className="hover:text-primary transition-colors text-gray-300">
                     booking@moonstonecabs.com
                   </a>
-                   <a href="mailto:sales@moonstonecabs.com" className="hover:text-primary transition-colors">
-                  sales@moonstonecabs.com
+                  <a href="mailto:sales@moonstonecabs.com" className="hover:text-primary transition-colors text-gray-300">
+                    sales@moonstonecabs.com
                   </a>
                 </div>
               </li>
-              <li className="flex  gap-2">
-                <Phone className="w-5 h-5 flex-shrink-0 text-primary" />
-                <div className="flex flex-col  gap-1">
-                  <a href="tel:+919536575768" className="hover:text-primary transition-colors">
+              <li className="flex gap-2 items-start">
+                <Phone className="w-5 h-5 flex-shrink-0 text-primary mt-1" />
+                <div className="flex flex-col gap-1 text-sm">
+                  <a href="tel:+919536575768" className="hover:text-primary transition-colors text-gray-300">
                     +91-9536575768
                   </a>
-                  <a href="tel:+919990800718" className="hover:text-primary transition-colors">
+                  <a href="tel:+919990800718" className="hover:text-primary transition-colors text-gray-300">
                     +91-9990800718
                   </a>
                 </div>
@@ -104,19 +102,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="text-sm text-gray-400 text-center md:text-left">
+        <div className="border-t border-gray-800 pt-6">
+          <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4">
+            <div className="text-sm text-gray-300 text-center md:text-left">
               © {new Date().getFullYear()} Moonstone Cabs Pvt. Ltd. All rights reserved.
             </div>
-            <div className="flex gap-6 text-sm text-gray-400">
-              <Link href="/cancellation" onClick={scrollToTop} className="hover:text-primary transition-colors">
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-sm">
+              <Link href="/cancellation" onClick={scrollToTop} className="hover:text-primary transition-colors text-gray-300">
                 Cancellation Policy
               </Link>
-              <Link href="/refund" onClick={scrollToTop} className="hover:text-primary transition-colors">
+              <Link href="/refund" onClick={scrollToTop} className="hover:text-primary transition-colors text-gray-300">
                 Refund Policy
               </Link>
-              <Link href="/disclaimer" onClick={scrollToTop} className="hover:text-primary transition-colors">
+              <Link href="/disclaimer" onClick={scrollToTop} className="hover:text-primary transition-colors text-gray-300">
                 Disclaimer
               </Link>
             </div>
@@ -125,7 +123,8 @@ export default function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-300 hover:text-primary transition-colors"
+                aria-label="Moonstone Cabs on Facebook"
               >
                 <Facebook className="w-5 h-5" />
               </a>
@@ -133,7 +132,8 @@ export default function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-primary transition-colors"
+                className="text-gray-300 hover:text-primary transition-colors"
+                aria-label="Moonstone Cabs on Instagram"
               >
                 <Instagram className="w-5 h-5" />
               </a>

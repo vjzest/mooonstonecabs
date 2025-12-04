@@ -28,7 +28,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-[600px] md:h-[700px] overflow-hidden">
+    <section className="relative h-auto min-h-[520px] sm:min-h-[560px] md:min-h-[640px] lg:h-[700px] overflow-hidden">
 
       {/* Background Carousel */}
       <div className="absolute inset-0">
@@ -55,20 +55,20 @@ export default function Hero() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 h-full relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center h-full">
 
           {/* Left Side Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-6 max-w-xl mx-auto lg:mx-0 text-center lg:text-left py-12 lg:py-0"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
             >
               A Ride with Ease and Comfort. Try it... 
             </motion.h1>
@@ -77,7 +77,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-lg md:text-xl text-gray-300"
+              className="text-base sm:text-lg md:text-xl text-gray-300"
             >
               Experience luxury, comfort, and punctuality with Moonstone Cabs — 
               your reliable partner for every journey.
@@ -88,10 +88,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              <a href="/booking">
+              <a href="/booking" className="block sm:inline-block">
                 <Button
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-5 py-4"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-5 py-4 w-full sm:w-auto"
                 >
                   Book Your Ride Now
                 </Button>
@@ -101,31 +101,27 @@ export default function Hero() {
 
          
         <motion.div
-  initial={{ opacity: 0, x: 300 }}   // right se bahar
-  animate={{ opacity: 1, x: 0 }}     // smooth slide in
-  transition={{
-    duration: 1.2,
-    delay: 0.3,
-    ease: [0.25, 0.1, 0.25, 1],      // smooth easing
-  }}
-  className="hidden lg:flex justify-center items-center"
->
-  <div className="relative">
-    <motion.div
-      className="absolute -inset-4 bg-primary/10 rounded-full blur-3xl"
-      animate={{ scale: [1, 1.1, 1] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-    />
-    <motion.img
-      src={carImage}
-      alt="Luxury Rolls Royce"
-       className="relative w-[550px] xl:w-[620px] drop-shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
-      initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 1.2, delay: 0.5 }}
-    />
-  </div>
-</motion.div>
+          initial={{ opacity: 0, x: 200 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.0, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          className="hidden md:flex justify-center items-center"
+        >
+          <div className="relative">
+            <motion.div
+              className="absolute -inset-4 bg-primary/10 rounded-full blur-3xl"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <motion.img
+              src={carImage}
+              alt="Luxury Rolls Royce"
+              className="relative w-[280px] sm:w-[380px] md:w-[520px] lg:w-[620px] drop-shadow-[0_15px_40px_rgba(0,0,0,0.6)] mx-auto"
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.5 }}
+            />
+          </div>
+        </motion.div>
 
 
         </div>

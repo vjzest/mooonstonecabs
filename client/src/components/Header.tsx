@@ -115,13 +115,17 @@ export default function Header() {
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute top-full left-0 mt-2 w-56 bg-white border border-border rounded-md shadow-lg py-2"
                   >
-                    {companyLinks.map((link) => (
-                      <Link key={link.path} href={link.path} onClick={scrollToTop}>
-                        <a className="block px-4 py-2 text-sm hover:bg-accent transition-colors" data-testid={`link-company-${link.path.split('/').pop()}`}>
+                      {companyLinks.map((link) => (
+                        <Link
+                          key={link.path}
+                          href={link.path}
+                          onClick={scrollToTop}
+                          className="block px-4 py-2 text-sm hover:bg-accent transition-colors"
+                          data-testid={`link-company-${link.path.split('/').pop()}`}
+                        >
                           {link.label}
-                        </a>
-                      </Link>
-                    ))}
+                        </Link>
+                      ))}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -141,10 +145,14 @@ export default function Header() {
                     className="absolute top-full left-0 mt-2 w-64 bg-white border border-border rounded-md shadow-lg py-2"
                   >
                     {serviceLinks.map((link) => (
-                      <Link key={link.path} href={link.path} onClick={scrollToTop}>
-                        <a className="block px-4 py-2 text-sm hover:bg-accent transition-colors" data-testid={`link-service-${link.path.split('/').pop()}`}>
-                          {link.label}
-                        </a>
+                      <Link
+                        key={link.path}
+                        href={link.path}
+                        onClick={scrollToTop}
+                        className="block px-4 py-2 text-sm hover:bg-accent transition-colors"
+                        data-testid={`link-service-${link.path.split('/').pop()}`}
+                      >
+                        {link.label}
                       </Link>
                     ))}
                   </motion.div>
@@ -194,6 +202,9 @@ export default function Header() {
             className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             data-testid="button-mobile-menu"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -206,6 +217,7 @@ export default function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
+              id="mobile-menu"
               className="lg:hidden border-t border-border"
             >
               <div className="px-4 py-4 space-y-4">
@@ -249,7 +261,13 @@ export default function Header() {
                     Book a Taxi
                   </Button>
                 </Link>
-                
+  <a
+    href="tel:+919536575768"
+    className="flex items-center gap-2 text-primary font-semibold whitespace-nowrap"
+  >
+    <Phone className="w-5 h-5" />
+    <span>+91-9536575768 <br />+91-9990800718</span>
+  </a>
               </div>
             </motion.div>
           )}

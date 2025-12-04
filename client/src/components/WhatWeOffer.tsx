@@ -22,14 +22,39 @@ export default function WhatWeOffer() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [currentIndex, setCurrentIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
 
   const scroll = (direction: "left" | "right") => {
-    if (direction === "left") {
-      setCurrentIndex((prev) => Math.max(0, prev - 1));
-    } else {
-      setCurrentIndex((prev) => Math.min(services.length - 1, prev + 1));
-    }
+    const el = carouselRef.current;
+    if (!el) return;
+    const width = el.clientWidth;
+    const delta = direction === 'left' ? -width : width;
+    el.scrollBy({ left: delta, behavior: 'smooth' });
   };
+
+  // Update scroll buttons availability
+  const updateScrollState = () => {
+    const el = carouselRef.current;
+    if (!el) return;
+    setCanScrollPrev(el.scrollLeft > 10);
+    setCanScrollNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 10);
+  };
+
+  // attach listeners
+  useState(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+    updateScrollState();
+    const onScroll = () => updateScrollState();
+    window.addEventListener('resize', updateScrollState);
+    el.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('resize', updateScrollState);
+      el.removeEventListener('scroll', onScroll);
+    };
+  });
 
   return (
     <section
@@ -64,23 +89,20 @@ export default function WhatWeOffer() {
         {/* Carousel */}
         <div className="relative">
           <div className="overflow-hidden">
-            <motion.div
-              className="flex gap-8"
-              animate={{ x: `-${currentIndex * (100 / Math.min(3, services.length))}%` }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
+            <div
+              ref={carouselRef}
+              className="flex gap-8 overflow-x-auto no-scrollbar snap-x snap-mandatory touch-pan-x"
+              role="list"
             >
-         {services.map((service, index) => (
-  <motion.div
-    key={service.title}
-    initial={{ opacity: 0, x: -80 }}
-    animate={isInView ? { opacity: 1, x: 0 } : {}}
-    transition={{
-      duration: 0.7,
-      delay: index * 0.25,
-      ease: "easeOut",
-    }}
-    className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3"
-  >
+              {services.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, x: -40 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.7, delay: index * 0.12, ease: 'easeOut' }}
+                  className="snap-start flex-shrink-0 min-w-[100%] sm:min-w-[50%] lg:min-w-[33.333%]"
+                  role="listitem"
+                >
     {/* ⭐ Premium Card */}
     <div
       className="
