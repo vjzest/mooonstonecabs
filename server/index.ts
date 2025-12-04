@@ -20,11 +20,28 @@ declare module "http" {
 }
 
 // CORS
+// Configure CORS. When the frontend sends requests with credentials (cookies or
+// Authorization with `fetch(..., { credentials: 'include' })`), the Access-Control-Allow-Origin
+// header must NOT be '*' and Access-Control-Allow-Credentials must be true. Use an allowlist
+// of origins (frontend production + local dev) and reflect the origin for allowed requests.
+const allowedOrigins = [
+  'https://moonstone-cabs.vercel.app', // production frontend
+  'http://localhost:5174', // local frontend dev
+  'http://127.0.0.1:5174',
+  'http://localhost:3000',
+];
+
 app.use(
   cors({
-    origin: "*",
-    methods: "GET,POST,PUT,DELETE",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g., server-to-server or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error('CORS policy: Origin not allowed'));
+    },
+    methods: 'GET,POST,PUT,DELETE',
     credentials: true,
+    exposedHeaders: ['Content-Range', 'X-Total-Count'],
   })
 );
 
