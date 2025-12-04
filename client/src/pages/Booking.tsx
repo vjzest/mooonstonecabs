@@ -241,13 +241,21 @@ export default function Booking() {
                                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify(payload),
                                   });
-                                  const body = await res.json();
+                                  const text = await res.text();
+                                  let body: any = null;
+                                  try {
+                                    body = text ? JSON.parse(text) : null;
+                                  } catch (parseErr) {
+                                    console.error('Non-JSON response for bookings/verify:', text);
+                                  }
+
                                   if (res.ok) {
-                                    toast({ title: 'Code sent', description: body.message || 'Verification code sent' });
+                                    toast({ title: 'Code sent', description: body?.message || 'Verification code sent' });
                                     setVerifyStage('code-sent');
                                     setIsDialogOpen(true);
                                   } else {
-                                    toast({ title: 'Failed to send code', description: body.error || 'Please try again' });
+                                    const errMsg = body?.error || `Server error (${res.status})`;
+                                    toast({ title: 'Failed to send code', description: errMsg });
                                   }
                                 } catch (err) {
                                   console.error('verify send error', err);
