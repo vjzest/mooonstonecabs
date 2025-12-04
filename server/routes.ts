@@ -37,6 +37,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     },
   });
 
+  // Safe send helper — catches errors so a failed email does not crash the request
+  async function sendMailSafe(mailOptions: any) {
+    try {
+      await transporter.sendMail(mailOptions);
+      return true;
+    } catch (e) {
+      console.error('Email send failed:', e);
+      return false;
+    }
+  }
+
   // Use the authenticated email as the default from address (reduces spam filtering)
   const defaultFrom = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@moonstonecabs.com';
 
@@ -192,14 +203,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       `;
 
       try {
-        await transporter.sendMail({
+        await sendMailSafe({
           from: `"Moonstone Cabs" <${defaultFrom}>`,
           to: updatedBooking.email,
           subject: `Booking Status Updated - ${updatedBooking.id}`,
           html: emailHTML,
         });
       } catch (emailError) {
-        console.error("Email sending failed:", emailError);
+        // sendMailSafe already logs errors — keep compatibility
       }
 
       res.json({ success: true, booking: updatedBooking, message: "Status updated successfully" });
@@ -397,7 +408,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       try {
         // Send email to customer
-        await transporter.sendMail({
+        await sendMailSafe({
           from: `"Moonstone Cabs" <${defaultFrom}>`,
           to: validatedData.email,
           subject: `Booking Confirmation - ${booking.id}`,
@@ -405,7 +416,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         // Send email to company
-        await transporter.sendMail({
+        await sendMailSafe({
           from: `"Moonstone Cabs Website" <${defaultFrom}>`,
           to: "booking@moonstonecabs.com, contact@moonstonecabs.com",
           subject: `🚕 New Booking: ${validatedData.name} - ${validatedData.startDate}`,
@@ -469,12 +480,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       // send code to user
-      await transporter.sendMail({
-        from: `"Moonstone Cabs" <${defaultFrom}>`,
-        to: validated.email,
-        subject: 'Your verification code — Moonstone Cabs',
-        html: `<p>Your verification code is <strong>${code}</strong>. It will expire in 15 minutes.</p>`,
-      });
+        await sendMailSafe({
+          from: `"Moonstone Cabs" <${defaultFrom}>`,
+          to: validated.email,
+          subject: 'Your verification code — Moonstone Cabs',
+          html: `<p>Your verification code is <strong>${code}</strong>. It will expire in 15 minutes.</p>`,
+        });
 
       // DEBUG: expose code in logs during development to make it easy to test
       console.log('🔐 booking verify code for', validated.email, ':', code);
@@ -521,7 +532,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p>Received: ${new Date().toISOString()}</p>
       `;
 
-      await transporter.sendMail({
+      await sendMailSafe({
         from: `"Moonstone Cabs Website" <${defaultFrom}>`,
         to: adminRecipients,
         subject: `🚀 Verified Contact: ${validated.name}`,
@@ -530,7 +541,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // confirmation to sender
       try {
-        await transporter.sendMail({
+        await sendMailSafe({
           from: `"Moonstone Cabs" <${defaultFrom}>`,
           to: validated.email,
           subject: 'We received your message — Moonstone Cabs',
@@ -543,7 +554,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           `,
         });
       } catch (err) {
-        console.error('Failed to send confirmation email to user:', err);
+        // sendMailSafe logs errors; nothing more to do here
       }
 
       // remove verification entry
@@ -584,14 +595,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         verified: false,
       });
 
-      await transporter.sendMail({
+      const emailSent = await sendMailSafe({
         from: `"Moonstone Cabs" <${defaultFrom}>`,
         to: validated.email,
         subject: 'Your booking verification code — Moonstone Cabs',
         html: `<p>Your verification code for booking is <strong>${code}</strong>. It expires in 15 minutes.</p>`,
       });
 
-      console.log('📨 Sent booking verification code to', validated.email);
+      if (emailSent) console.log('📨 Sent booking verification code to', validated.email);
+      else console.warn('⚠️ Failed to send booking verification email to', validated.email);
       const showCode = process.env.DEBUG_EMAILS === 'true' || process.env.DEV_EXPOSE_CODES === '1' || app.get('env') === 'development';
       res.json({ success: true, message: 'Verification code sent to email', code: showCode ? code : undefined });
     } catch (err) {
