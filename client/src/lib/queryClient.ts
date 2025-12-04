@@ -1,7 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 
-// ⭐ BACKEND BASE URL from Vercel Env
-const BASE_URL = import.meta.env.VITE_API_URL;
+// ⭐ BACKEND BASE URL from Vercel Env (optional)
+// If not provided, we fall back to relative paths so the app works with a proxy.
+const BASE_URL = import.meta.env.VITE_API_URL || '';
 // Example: https://moonstone-website.onrender.com
 
 async function throwIfResNotOk(res: Response) {
@@ -17,7 +18,7 @@ export async function apiRequest(
   data?: unknown,
 ): Promise<Response> {
 
-  // ⭐ Ensure URL always begins with "/"
+  // ⭐ Ensure URL always begins with "/" and respect optional BASE_URL
   const finalUrl = BASE_URL + (url.startsWith("/") ? url : "/" + url);
 
   const res = await fetch(finalUrl, {
@@ -37,10 +38,10 @@ export const getQueryFn =
   ({ on401 }: { on401: UnauthorizedBehavior }) =>
   async ({ queryKey }) => {
 
-    // ⭐ Create clean path: /api/admin/bookings etc.
-    const path = "/" + queryKey.join("/");
+  // ⭐ Create clean path: /api/admin/bookings etc.
+  const path = "/" + queryKey.join("/");
 
-    const fullUrl = BASE_URL + path;
+  const fullUrl = BASE_URL + path;
 
     const res = await fetch(fullUrl, {
       credentials: "include",

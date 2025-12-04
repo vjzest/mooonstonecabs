@@ -237,25 +237,16 @@ export default function Booking() {
                                     startTime: values.startTime,
                                   };
 
-                                  const res = await fetch('/api/bookings/verify', {
-                                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(payload),
-                                  });
-                                  const text = await res.text();
-                                  let body: any = null;
                                   try {
-                                    body = text ? JSON.parse(text) : null;
-                                  } catch (parseErr) {
-                                    console.error('Non-JSON response for bookings/verify:', text);
-                                  }
-
-                                  if (res.ok) {
+                                    const res = await apiRequest('POST', '/api/bookings/verify', payload);
+                                    // apiRequest throws on non-ok; if we reach here it's ok
+                                    const body = await res.json().catch(() => null);
                                     toast({ title: 'Code sent', description: body?.message || 'Verification code sent' });
                                     setVerifyStage('code-sent');
                                     setIsDialogOpen(true);
-                                  } else {
-                                    const errMsg = body?.error || `Server error (${res.status})`;
-                                    toast({ title: 'Failed to send code', description: errMsg });
+                                  } catch (err: any) {
+                                    console.error('verify send error', err);
+                                    toast({ title: 'Failed to send code', description: err.message || 'Please try again' });
                                   }
                                 } catch (err) {
                                   console.error('verify send error', err);
