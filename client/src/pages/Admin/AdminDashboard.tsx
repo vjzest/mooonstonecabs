@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import CursorFollower from '@/components/CursorFollower';
 import { LogOut, CheckCircle, Clock, XCircle, Zap } from 'lucide-react';
-import type { Booking } from '@shared/schemas-client';
+import type { Booking } from '@/shared/schemas-client';
 
 interface DashboardStats {
   total: number;

@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type Booking, type InsertBooking, type Admin, type InsertAdmin, type BookingStatus } from "@shared/schema";
+import { type User, type InsertUser, type Booking, type InsertBooking, type Admin, type InsertAdmin, type BookingStatus } from "@/shared/schema";
 import { randomUUID } from "crypto";
 import mongoose from "mongoose";
 import { BookingModel } from "./models/booking";
