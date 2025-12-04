@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { insertBookingSchema, insertAdminSchema, updateBookingStatusSchema, insertContactSchema, contactVerifySchema, contactConfirmSchema, bookingVerifySchema, bookingConfirmSchema } from "@/shared/schema";
+import { insertBookingSchema, insertAdminSchema, updateBookingStatusSchema, insertContactSchema, contactVerifySchema, contactConfirmSchema, bookingVerifySchema, bookingConfirmSchema } from "./shared-schema";
 
 import { z } from "zod";
 import nodemailer from "nodemailer";
