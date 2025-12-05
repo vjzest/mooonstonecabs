@@ -24,7 +24,7 @@ export default function CallUs() {
           transition={{ duration: 0.6 }}
           className="text-center mb-10"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3">
             Call Us Now & Book Your Taxi!
           </h2>
           <p className="text-base md:text-lg text-gray-300 max-w-2xl mx-auto">
@@ -32,7 +32,7 @@ export default function CallUs() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           {/* Left Side - Call Vector */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -76,7 +76,7 @@ export default function CallUs() {
               <img
                 src={callImage}
                 alt="Customer Support"
-                className="w-full h-80 object-cover"
+                className="w-full h-60 sm:h-72 md:h-80 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </div>

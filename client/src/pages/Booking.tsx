@@ -109,19 +109,19 @@ export default function Booking() {
 
       {/* Hero Section */}
       <section
-        className="relative h-[300px] bg-cover bg-center flex items-center justify-center"
+        className="relative h-auto min-h-[280px] sm:min-h-[320px] md:min-h-[360px] bg-cover bg-center flex items-center justify-center"
         style={{
           backgroundImage: "url('/assets/fleet-banner.jpg')",
         }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
 
-        <div className="relative z-10 text-center px-4">
+        <div className="relative z-10 text-center px-4 py-12 sm:py-16">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-white mb-3"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3"
           >
             Book Your Ride
           </motion.h1>
@@ -130,7 +130,7 @@ export default function Booking() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
+            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
           >
             Quick • Simple • Reliable • 24/7 Booking Available
           </motion.p>
@@ -141,35 +141,35 @@ export default function Booking() {
       <Breadcrumb items={[{ label: 'Booking' }]} />
 
       {/* Main Booking Section */}
-      <section ref={ref} className="py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4">
+      <section ref={ref} className="py-12 sm:py-16 md:py-20 bg-background">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl shadow-xl p-8 md:p-12 relative z-20"
+            className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 md:p-12 relative z-20"
           >
-            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-3xl font-bold text-foreground mb-6 sm:mb-8 text-center">
               Fill in Your Details
             </h2>
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 sm:space-y-6">
                 {/* 2 Column Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   {/* NAME */}
                   <FormField
                     control={form.control}
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Your Name *
                         </FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter full name"
-                            className="bg-gray-50 border border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                           />
                         </FormControl>
@@ -184,13 +184,13 @@ export default function Booking() {
                     name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Phone Number *
                         </FormLabel>
                         <FormControl>
                           <Input
                             placeholder="+91 9876543210"
-                            className="bg-gray-50 border border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                           />
                         </FormControl>
@@ -205,7 +205,7 @@ export default function Booking() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Email *
                         </FormLabel>
                         <FormControl>
@@ -213,7 +213,7 @@ export default function Booking() {
                             <Input
                               type="email"
                               placeholder="your@email.com"
-                              className="bg-gray-50 border border-gray-300 text-foreground h-11"
+                              className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                               {...field}
                               onChange={(e) => { field.onChange(e); setEmailVerified(false); setVerifyStage('idle'); }}
                             />
@@ -255,7 +255,7 @@ export default function Booking() {
                                   setVerifyLoading(false);
                                 }
                               }}
-                              className="inline-flex items-center justify-center rounded-md bg-sky-600 hover:bg-sky-700 text-white px-4 text-sm font-semibold disabled:opacity-60 h-11 min-w-[96px]"
+                              className="inline-flex items-center justify-center rounded-md bg-sky-600 hover:bg-sky-700 text-white px-3 sm:px-4 text-xs sm:text-sm font-semibold disabled:opacity-60 h-10 sm:h-11 min-w-[80px] sm:min-w-[96px]"
                             >
                               {verifyStage === 'code-sent' ? 'Re-send' : 'Verify'}
                             </button>
@@ -272,14 +272,14 @@ export default function Booking() {
                     name="passengers"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Number of Passengers *
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             min="1"
-                            className="bg-gray-50 border border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                             onChange={(e) => field.onChange(parseInt(e.target.value))}
                           />
@@ -295,13 +295,13 @@ export default function Booking() {
                     name="pickupLocation"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Pickup Location *
                         </FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter pickup location"
-                            className="bg-gray-50 border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                           />
                         </FormControl>
@@ -316,13 +316,13 @@ export default function Booking() {
                     name="dropLocation"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Drop Location *
                         </FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Enter drop location"
-                            className="bg-gray-50 border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                           />
                         </FormControl>
@@ -337,7 +337,7 @@ export default function Booking() {
   name="startDate"
   render={({ field }) => (
     <FormItem>
-      <FormLabel className="text-foreground font-semibold">
+      <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
         Date *
       </FormLabel>
 
@@ -349,10 +349,10 @@ export default function Booking() {
                             onChange={field.onChange}
                             minDate={new Date()}
                             wrapperClassName="w-full"
-                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-foreground h-11"
+                            className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-foreground h-10 sm:h-11 text-sm"
                             placeholderText="Select date"
                             // Use a native input as customInput so the rendered input exactly matches other inputs
-                            customInput={<input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-foreground h-11" />}
+                            customInput={<input className="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md text-foreground h-10 sm:h-11 text-sm" />}
                           />
         </div>
       </FormControl>
@@ -367,13 +367,13 @@ export default function Booking() {
                     name="startTime"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-foreground font-semibold">
+                        <FormLabel className="text-sm sm:text-base text-foreground font-semibold">
                           Time *
                         </FormLabel>
                         <FormControl>
                           <Input
                             type="time"
-                            className="bg-gray-50 border-gray-300 text-foreground h-11"
+                            className="bg-gray-50 border border-gray-300 text-foreground h-10 sm:h-11 text-sm"
                             {...field}
                           />
                         </FormControl>
@@ -384,11 +384,11 @@ export default function Booking() {
                 </div>
 
                 {/* SUBMIT BUTTON */}
-                <div className="flex gap-4 pt-6">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 sm:pt-6">
                   <Button
                     type="submit"
                     disabled={isSubmitting || !emailVerified}
-                    className="flex-1 py-3 text-lg font-semibold bg-primary hover:bg-primary/90 text-white rounded-lg shadow-lg hover:scale-[1.01] transition-all"
+                    className="flex-1 py-2 sm:py-3 text-sm sm:text-base font-semibold bg-primary hover:bg-primary/90 text-white rounded-lg shadow-lg hover:scale-[1.01] transition-all"
                   >
                     {isSubmitting ? 'Booking...' : 'Book Your Taxi'}
                   </Button>
@@ -396,7 +396,7 @@ export default function Booking() {
                     type="button"
                     onClick={() => form.reset()}
                     variant="outline"
-                    className="flex-1 py-3 text-lg font-semibold"
+                    className="flex-1 py-2 sm:py-3 text-sm sm:text-base font-semibold"
                   >
                     Clear Form
                   </Button>

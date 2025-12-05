@@ -15,12 +15,12 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-4xl md:text-5xl font-bold text-primary text-center mb-16"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary text-center mb-12 sm:mb-16"
         >
           About Our Company
         </motion.h2>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Side - Images with Badge */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -38,8 +38,8 @@ export default function About() {
                   />
                 </div>
 
-                {/* Overlapping Smaller Image (slightly right shifted) */}
-                <div className="absolute bottom-[-70px] left-[5px] w-[110%] overflow-hidden shadow-xl">
+                {/* Overlapping Smaller Image - Hide on mobile, show on lg */}
+                <div className="hidden lg:block absolute bottom-[-70px] left-[5px] w-[110%] overflow-hidden shadow-xl">
                   <img
                     src={fleetImage2}
                     alt="Professional Service"
@@ -54,13 +54,13 @@ export default function About() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-6 mt-8 lg:mt-0"
           >
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg text-muted-foreground leading-relaxed"
+              className="text-base sm:text-lg text-muted-foreground leading-relaxed"
             >
               Moonstone Cabs Private Limited is one of the most reputable and leading car rental company in Delhi & NCR. Our rapid growth and continued success are a true reflection of the trust, confidence, and satisfaction of our valued clients. We take pride in delivering reliable, comfortable, and professional transportation solutions that meet the diverse needs of our customers across the region.
             </motion.p>

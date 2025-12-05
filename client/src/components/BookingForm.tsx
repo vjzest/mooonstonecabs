@@ -50,14 +50,14 @@ export default function BookingForm() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
 
           {/* LEFT — IMAGE */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7 }}
-            className="hidden lg:flex items-end justify-center"
+            className="hidden md:flex items-end justify-center"
           >
             <img
               src="/assets/cta-men2.png"
@@ -72,43 +72,43 @@ export default function BookingForm() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.15 }}
             className="bg-white/10 backdrop-blur-xl border border-white/20 
-            rounded-2xl p-8 shadow-2xl text-white"
+            rounded-2xl p-6 sm:p-8 shadow-2xl text-white"
           >
-            <h3 className="text-2xl font-bold mb-6 text-primary drop-shadow-md">
+            <h3 className="text-xl sm:text-2xl font-bold mb-6 text-primary drop-shadow-md">
               Why Choose Our Premium Ride?
             </h3>
 
             {/* FEATURE GRID */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 gap-4 sm:gap-5">
 
               {/* CARD 1 */}
-              <div className="p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-lg font-semibold">🚖 Instant Booking</h4>
-                <p className="text-gray-300 text-sm mt-1">
+              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
+                <h4 className="text-base sm:text-lg font-semibold">🚖 Instant Booking</h4>
+                <p className="text-gray-300 text-xs sm:text-sm mt-1">
                   Get your taxi confirmed within seconds.
                 </p>
               </div>
 
               {/* CARD 2 */}
-              <div className="p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-lg font-semibold">🛡 Verified Drivers</h4>
-                <p className="text-gray-300 text-sm mt-1">
+              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
+                <h4 className="text-base sm:text-lg font-semibold">🛡 Verified Drivers</h4>
+                <p className="text-gray-300 text-xs sm:text-sm mt-1">
                   Only trained and trusted drivers on duty.
                 </p>
               </div>
 
               {/* CARD 3 */}
-              <div className="p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-lg font-semibold">💺 Luxury Comfort</h4>
-                <p className="text-gray-300 text-sm mt-1">
+              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
+                <h4 className="text-base sm:text-lg font-semibold">💺 Luxury Comfort</h4>
+                <p className="text-gray-300 text-xs sm:text-sm mt-1">
                   Super-clean AC cars with smooth rides.
                 </p>
               </div>
 
               {/* CARD 4 */}
-              <div className="p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-lg font-semibold">⏱ On-Time Guarantee</h4>
-                <p className="text-gray-300 text-sm mt-1">
+              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
+                <h4 className="text-base sm:text-lg font-semibold">⏱ On-Time Guarantee</h4>
+                <p className="text-gray-300 text-xs sm:text-sm mt-1">
                   Your time matters — no delays, no excuses.
                 </p>
               </div>
