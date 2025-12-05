@@ -1,8 +1,12 @@
 import { QueryClient } from "@tanstack/react-query";
 
-// ⭐ Backend base URL (Render backend)
-const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
-// Removes trailing "/" so URLs do not break
+// ⭐ Backend base URL configuration
+// In development: Empty string (Vite proxy handles /api → backend)
+// In production: Use VITE_API_URL from .env
+const isDev = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+const BASE_URL = isDev
+  ? "" // Development: Use Vite proxy
+  : ((import.meta as any).env.VITE_API_URL || "https://moonstonecabs.onrender.com").replace(/\/+$/, ""); // Production
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {

@@ -229,25 +229,43 @@ export default function Booking() {
                                     phone: values.phone,
                                   };
 
-                                  const res = await apiRequest(
-                                    "POST",
-                                    "/api/bookings/verify",
-                                    payload
-                                  );
+                                  console.log('🔍 Sending verify request:', payload);
+                                  const startTime = Date.now();
+                                  
+                                  // Add timeout of 30 seconds
+                                  const res = await Promise.race([
+                                    apiRequest(
+                                      "POST",
+                                      "/api/bookings/verify",
+                                      payload
+                                    ),
+                                    new Promise<Response>((_, reject) =>
+                                      setTimeout(
+                                        () => reject(new Error('Verification request timeout (30s) - server not responding')),
+                                        30000
+                                      )
+                                    ),
+                                  ]);
 
+                                  const elapsed = Date.now() - startTime;
+                                  console.log(`✅ Verify response received in ${elapsed}ms`);
+                                  
                                   const body = await res.json().catch(() => null);
+                                  console.log('📦 Response body:', body);
 
                                   toast({
                                     title: "Verification code sent",
-                                    description: body?.message,
+                                    description: body?.message || "Check your email for the OTP code",
                                   });
 
                                   setVerifyStage("code-sent");
                                   setIsDialogOpen(true);
                                 } catch (err) {
+                                  console.error('❌ Verify error:', err);
                                   toast({
                                     title: "Failed to send verification code",
-                                    description: err instanceof Error ? err.message : "Please check your email address",
+                                    description: err instanceof Error ? err.message : "Please check your email address and try again",
+                                    variant: "destructive",
                                   });
                                 } finally {
                                   setVerifyLoading(false);
@@ -394,6 +412,15 @@ export default function Booking() {
                 <DialogFooter>
                   <Button
                     onClick={async () => {
+                      if (!verifyCode) {
+                        toast({
+                          title: "Enter code",
+                          description: "Please enter the 6-digit code from your email",
+                          variant: "destructive",
+                        });
+                        return;
+                      }
+                      
                       setVerifyLoading(true);
                       try {
                         const values = form.getValues();
@@ -402,13 +429,28 @@ export default function Booking() {
                           code: verifyCode,
                         };
 
-                        const res = await apiRequest(
-                          "POST",
-                          "/api/bookings/confirm",
-                          payload
-                        );
+                        console.log('🔐 Sending confirm request with code:', verifyCode.substring(0, 2) + '****');
+                        const startTime = Date.now();
+                        
+                        const res = await Promise.race([
+                          apiRequest(
+                            "POST",
+                            "/api/bookings/confirm",
+                            payload
+                          ),
+                          new Promise<Response>((_, reject) =>
+                            setTimeout(
+                              () => reject(new Error('Confirm request timeout (30s) - server not responding')),
+                              30000
+                            )
+                          ),
+                        ]);
 
+                        const elapsed = Date.now() - startTime;
+                        console.log(`✅ Confirm response received in ${elapsed}ms`);
+                        
                         const body = await res.json();
+                        console.log('📦 Confirm response:', body);
 
                         if (res.ok) {
                           toast({
@@ -422,14 +464,15 @@ export default function Booking() {
                           toast({
                             title: "❌ Verification Failed",
                             description:
-                              body.error || "Invalid verification code",
+                              body.error || "Invalid verification code - please check and try again",
                             variant: "destructive",
                           });
                         }
                       } catch (err) {
+                        console.error('❌ Confirm error:', err);
                         toast({
                           title: "❌ Verification Error",
-                          description: err instanceof Error ? err.message : "Failed to verify code",
+                          description: err instanceof Error ? err.message : "Failed to verify code - please try again",
                           variant: "destructive",
                         });
                       } finally {
