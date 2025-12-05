@@ -11,4 +11,14 @@ export default defineConfig({
       "@shared": path.resolve(__dirname, "src/shared"),
     },
   },
+  server: {
+    proxy: {
+      // ⭐ Proxy /api calls to backend to avoid CORS during local dev
+      "/api": {
+        target: "https://moonstonecabs.onrender.com",
+        changeOrigin: true,
+        rewrite: (path) => path, // keep /api prefix
+      },
+    },
+  },
 });

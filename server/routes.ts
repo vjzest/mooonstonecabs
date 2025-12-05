@@ -602,16 +602,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         html: `<p>Your verification code for booking is <strong>${code}</strong>. It expires in 15 minutes.</p>`,
       });
 
-      if (emailSent) console.log('📨 Sent booking verification code to', validated.email);
-      else console.warn('⚠️ Failed to send booking verification email to', validated.email);
+      if (emailSent) {
+        console.log('📨 Sent booking verification code to', validated.email);
+      } else {
+        console.warn('⚠️ Failed to send booking verification email to', validated.email);
+      }
       const showCode = process.env.DEBUG_EMAILS === 'true' || process.env.DEV_EXPOSE_CODES === '1' || app.get('env') === 'development';
-      res.json({ success: true, message: 'Verification code sent to email', code: showCode ? code : undefined });
+      res.json({ 
+        success: true, 
+        message: emailSent ? 'Verification code sent to email' : 'Verification code generated (email may have failed — check logs)', 
+        code: showCode ? code : undefined 
+      });
     } catch (err) {
       if (err instanceof z.ZodError) {
-        return res.status(400).json({ success: false, error: 'Invalid booking data', details: (err as z.ZodError).issues });
+        const issues = (err as z.ZodError).issues;
+        console.warn('❌ Booking verify validation failed:', issues);
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid booking data', 
+          details: issues.map(issue => ({ path: issue.path.join('.'), message: issue.message }))
+        });
       }
-      console.error('Booking verify error:', err);
-      res.status(500).json({ success: false, error: 'Failed to send verification code' });
+      console.error('❌ Booking verify error:', err);
+      res.status(500).json({ success: false, error: 'Failed to send verification code', details: err instanceof Error ? err.message : String(err) });
     }
   });
 

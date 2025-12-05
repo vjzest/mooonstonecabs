@@ -222,11 +222,11 @@ export default function Booking() {
                                 setVerifyLoading(true);
                                 try {
                                   const values = form.getValues();
+                                  // ⭐ Only send fields required by bookingVerifySchema
                                   const payload = {
-                                    ...values,
-                                    startDate: values.startDate
-                                      ? values.startDate.toISOString().split("T")[0]
-                                      : "",
+                                    email: values.email,
+                                    name: values.name,
+                                    phone: values.phone,
                                   };
 
                                   const res = await apiRequest(
@@ -247,6 +247,7 @@ export default function Booking() {
                                 } catch (err) {
                                   toast({
                                     title: "Failed to send verification code",
+                                    description: err instanceof Error ? err.message : "Please check your email address",
                                   });
                                 } finally {
                                   setVerifyLoading(false);
@@ -401,28 +402,36 @@ export default function Booking() {
                           code: verifyCode,
                         };
 
-                        const res = await fetch("/api/bookings/confirm", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify(payload),
-                        });
+                        const res = await apiRequest(
+                          "POST",
+                          "/api/bookings/confirm",
+                          payload
+                        );
 
                         const body = await res.json();
 
                         if (res.ok) {
                           toast({
-                            title: "Email Verified",
+                            title: "✅ Email Verified",
                             description: "You can now complete the booking.",
                           });
                           setEmailVerified(true);
                           setIsDialogOpen(false);
+                          setVerifyCode("");
                         } else {
                           toast({
-                            title: "Verification Failed",
+                            title: "❌ Verification Failed",
                             description:
                               body.error || "Invalid verification code",
+                            variant: "destructive",
                           });
                         }
+                      } catch (err) {
+                        toast({
+                          title: "❌ Verification Error",
+                          description: err instanceof Error ? err.message : "Failed to verify code",
+                          variant: "destructive",
+                        });
                       } finally {
                         setVerifyLoading(false);
                       }

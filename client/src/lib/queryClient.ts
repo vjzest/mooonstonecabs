@@ -1,9 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 
-// ⭐ BACKEND BASE URL from Vercel Env (optional)
-// If not provided, we fall back to relative paths so the app works with a proxy.
-const BASE_URL = import.meta.env.VITE_API_URL || '';
-// Example: https://moonstone-website.onrender.com
+// ⭐ Backend base URL (Render backend)
+const BASE_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+// Removes trailing "/" so URLs do not break
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -12,38 +11,50 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
+/**
+ * ⭐ UNIVERSAL API Request Utility
+ * Automatically:
+ * - Prepends BASE_URL
+ * - Fixes slashes
+ * - Sends JSON
+ * - Validates HTTP status
+ */
 export async function apiRequest(
   method: string,
   url: string,
-  data?: unknown,
+  data?: unknown
 ): Promise<Response> {
-
-  // ⭐ Ensure URL always begins with "/" and respect optional BASE_URL
-  const finalUrl = BASE_URL + (url.startsWith("/") ? url : "/" + url);
+  
+  // Safe path creation
+  const cleanUrl = url.startsWith("/") ? url : "/" + url;
+  const finalUrl = BASE_URL + cleanUrl;
 
   const res = await fetch(finalUrl, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: data ? { "Content-Type": "application/json" } : undefined,
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
+    credentials: "include", // required for future auth
   });
 
   await throwIfResNotOk(res);
   return res;
 }
 
+/**
+ * ⭐ Query Function Generator for react-query
+ * Automatically builds URLs from query keys
+ */
 type UnauthorizedBehavior = "returnNull" | "throw";
 
 export const getQueryFn =
   ({ on401 }: { on401: UnauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    // queryKey example: ["api", "bookings", "list"]
+    const path = "/" + queryKey.join("/");
 
-  // ⭐ Create clean path: /api/admin/bookings etc.
-  const path = "/" + queryKey.join("/");
+    const finalUrl = BASE_URL + path;
 
-  const fullUrl = BASE_URL + path;
-
-    const res = await fetch(fullUrl, {
+    const res = await fetch(finalUrl, {
       credentials: "include",
     });
 
@@ -55,11 +66,13 @@ export const getQueryFn =
     return await res.json();
   };
 
+/**
+ * ⭐ QueryClient Setup
+ */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: getQueryFn({ on401: "throw" }),
-      refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
       retry: false,
