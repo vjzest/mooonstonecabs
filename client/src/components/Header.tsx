@@ -50,9 +50,9 @@ export default function Header() {
       {/* ---------- TOP HEADER (unchanged desktop) ---------- */}
       <div className="bg-white border-b border-border">
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center text-sm">
-          <div className="text-base font-bold hidden md:block text-primary -translate-x-6">
+          {/* <div className="text-base font-bold hidden md:block text-primary -translate-x-6">
             A Ride with Ease and Comfort. Try it...
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-6">
             <Link
@@ -107,26 +107,27 @@ export default function Header() {
 <Link
   href="/"
   onClick={scrollToTop}
-  className="flex items-center gap-2 md:-ml-10"
+  className="flex items-center gap-2 md:gap-3 flex-shrink-0"
+  aria-label="Moonstone Cabs home"
 >
 
-  {/* Logo Image */}
+  {/* Logo Image
   <img
     src="logo.png"   // <-- your logo path
     alt="Moonstone Cabs Logo"
     className="w-12 h-12 md:w-16 md:h-16 object-contain"
-  />
+  /> */}
 
   {/* Text Block */}
-  <div className="flex flex-col leading-tight">
+  <div className="flex flex-col leading-tight min-w-0">
     
     {/* Company Name */}
-    <span className="text-xl md:text-2xl font-bold text-primary">
+    <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary truncate">
       MOONSTONE CABS
     </span>
 
     {/* Tagline — visible only on desktop */}
-    <span className="hidden md:block text-xs text-primary font-semibold">
+    <span className="hidden md:block text-xs md:text-sm text-primary font-semibold">
       A Ride with Ease and Comfort. Try it...
     </span>
   </div>
@@ -187,14 +188,15 @@ export default function Header() {
           </nav>
 
           {/* DESKTOP CTA */}
-          <div className="hidden lg:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4">
             <Link href="/booking">
-              <Button className="bg-primary text-white">Book a Taxi</Button>
+              <Button className="bg-primary text-white px-4 py-2 text-sm sm:text-base rounded-md">Book a Taxi</Button>
             </Link>
 
-            <a href="tel:+919536575768" className="flex items-center gap-2 text-primary">
+            {/* phone link visible only on xl to avoid layout issues */}
+            <a href="tel:+919536575768" className="hidden xl:flex items-center gap-2 text-primary" aria-label="Call Moonstone Cabs">
               <Phone className="w-5 h-5" />
-              +91-9536575768
+              <span className="text-sm">+91-9536575768</span>
             </a>
           </div>
 
