@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import CursorFollower from '@/components/CursorFollower';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -64,7 +63,6 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <CursorFollower />
 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}

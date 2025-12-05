@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import CursorFollower from '@/components/CursorFollower';
 import Header from '@/components/Header';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
@@ -14,26 +13,32 @@ import coordinationImage from '/assets/event_coordination.jpg';
 import brandsImage from '/assets/clients_showcase.jpg';
 
 export default function Exhibitions() {
+  // REF for lower sections
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
+  // NEW REF for HERO section so hero animations trigger correctly
+  const topRef = useRef(null);
+  const topInView = useInView(topRef, { once: true, amount: 0.3 });
+
   return (
     <div className="min-h-screen">
-      <CursorFollower />
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section (now uses topRef/topInView) */}
       <section
+        ref={topRef}
         className="relative h-[300px] bg-cover bg-center flex flex-col items-center justify-center text-center"
         style={{
           backgroundImage: "url('/assets/career-banner.jpg')",
         }}
+        aria-label="Events & Exhibitions hero"
       >
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 px-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={topInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-5xl font-bold text-white mb-3"
           >
@@ -41,7 +46,7 @@ export default function Exhibitions() {
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            animate={topInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
           >
@@ -54,7 +59,6 @@ export default function Exhibitions() {
 
       {/* Main Section */}
       <section ref={ref} className="py-20 bg-background">
-       
         <div className="max-w-7xl mx-auto px-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -81,7 +85,8 @@ export default function Exhibitions() {
             >
               <img
                 src={businessImage}
-                alt="Events Transportation"
+                alt="Attendees boarding shuttle"
+                loading="lazy"
                 className="rounded-lg shadow-xl w-full h-96 object-cover"
               />
             </motion.div>
@@ -98,6 +103,7 @@ export default function Exhibitions() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 With experience handling corporate conferences, trade shows, and international exhibitions, we provide end-to-end transportation management tailored to your event's unique requirements.
               </p>
+
               <div className="bg-card border border-card-border rounded-lg p-6">
                 <h3 className="text-xl font-bold text-foreground mb-4">Event Services Include:</h3>
                 <ul className="space-y-3">
@@ -123,6 +129,7 @@ export default function Exhibitions() {
                   </li>
                 </ul>
               </div>
+
               <a href="/booking">
                 <Button size="lg" className="bg-primary hover:bg-primary/90" data-testid="button-book-event">
                   Book Event Transportation
@@ -133,7 +140,7 @@ export default function Exhibitions() {
         </div>
       </section>
 
-      {/* 🟢 Section 2: Why Choose Us */}
+      {/* Section 2: Why Choose Us */}
       <section className="py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-center">
           <motion.div
@@ -158,14 +165,15 @@ export default function Exhibitions() {
           >
             <img
               src={coordinationImage}
-              alt="Event Coordination"
+              alt="Onsite event coordination"
+              loading="lazy"
               className="rounded-lg shadow-xl w-full h-96 object-cover"
             />
           </motion.div>
         </div>
       </section>
 
-      {/* 🟢 Section 3: Fleet Options */}
+      {/* Section 3: Fleet Options */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.h2
@@ -193,6 +201,7 @@ export default function Exhibitions() {
                 <img
                   src={item.img}
                   alt={item.title}
+                  loading="lazy"
                   className="rounded-lg mb-4 h-48 w-full object-cover"
                 />
                 <h3 className="text-xl font-semibold mb-2 text-foreground">{item.title}</h3>
@@ -203,7 +212,7 @@ export default function Exhibitions() {
         </div>
       </section>
 
-      {/* 🟢 Section 4: Trusted by Leading Brands */}
+      {/* Section 4: Trusted by Leading Brands */}
       <section className="py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <motion.h2
@@ -228,6 +237,7 @@ export default function Exhibitions() {
             transition={{ duration: 0.8 }}
             src={brandsImage}
             alt="Client Brands"
+            loading="lazy"
             className="mx-auto rounded-lg shadow-lg w-full max-w-4xl object-cover"
           />
         </div>

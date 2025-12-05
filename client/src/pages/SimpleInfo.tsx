@@ -1,4 +1,3 @@
-import CursorFollower from '@/components/CursorFollower';
 import Header from '@/components/Header';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
@@ -11,7 +10,6 @@ interface SimpleInfoProps {
 export default function SimpleInfo({ title, content }: SimpleInfoProps) {
   return (
     <div className="min-h-screen">
-      <CursorFollower />
       <Header />
       <Breadcrumb items={[{ label: title }]} />
 

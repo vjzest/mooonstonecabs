@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import CursorFollower from '@/components/CursorFollower';
 import Header from '@/components/Header';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
@@ -17,7 +16,6 @@ export default function MissionVision() {
 
   return (
     <div className="min-h-screen bg-white">
-      <CursorFollower />
       <Header />
 
       {/* 🔹 Banner Section */}

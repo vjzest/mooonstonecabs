@@ -1,6 +1,5 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import CursorFollower from '@/components/CursorFollower';
 import Header from '@/components/Header';
 import Breadcrumb from '@/components/Breadcrumb';
 import Footer from '@/components/Footer';
@@ -39,7 +38,6 @@ export default function Milestones() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white via-orange-50 to-white">
-      <CursorFollower />
       <Header />
        <section
               className="relative h-[300px] bg-cover bg-center flex flex-col items-center justify-center text-center"

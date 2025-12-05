@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
-import CursorFollower from '@/components/CursorFollower';
 import { LogOut, CheckCircle, Clock, XCircle, Zap } from 'lucide-react';
 import type { Booking } from '@/shared/schemas-client';
 
@@ -152,7 +151,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <CursorFollower />
+      
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
