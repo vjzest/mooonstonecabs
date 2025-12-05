@@ -15,7 +15,9 @@ export default defineConfig({
     proxy: {
       // ⭐ Proxy /api calls to backend to avoid CORS during local dev
       "/api": {
-        target: "https://moonstonecabs.onrender.com",
+        // During local development proxy API requests to the local backend
+        // Change to Render only when testing the deployed backend.
+        target: "http://localhost:5000",
         changeOrigin: true,
         rewrite: (path) => path, // keep /api prefix
       },

@@ -10,8 +10,24 @@ const BASE_URL = isDev
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
-    const text = (await res.text()) || res.statusText;
-    throw new Error(`${res.status}: ${text}`);
+    // try to parse JSON body for richer error information
+    let body: any = undefined;
+    try {
+      body = await res.json();
+    } catch (_) {
+      try {
+        body = await res.text();
+      } catch (_) {
+        body = undefined;
+      }
+    }
+
+    const message = body && typeof body === 'object' && body.error ? `${res.status}: ${body.error}` : `${res.status}: ${res.statusText}`;
+
+    const err: any = new Error(message);
+    err.status = res.status;
+    err.body = body;
+    throw err;
   }
 }
 
@@ -40,6 +56,7 @@ export async function apiRequest(
     credentials: "include", // required for future auth
   });
 
+  // Provide richer error information to callers (body available on thrown error)
   await throwIfResNotOk(res);
   return res;
 }

@@ -625,8 +625,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const showCode = process.env.DEBUG_EMAILS === 'true' || process.env.DEV_EXPOSE_CODES === '1' || app.get('env') === 'development';
       const response = {
-        success: true, 
-        message: emailSent ? 'Verification code sent to email' : 'Code generated but email send failed - check server logs', 
+        success: true,
+        // emailSent flag informs client whether SMTP actually delivered the mail
+        emailSent: !!emailSent,
+        message: emailSent ? 'Verification code sent to email' : 'Code generated but email send failed - check server logs',
         code: showCode ? code : undefined,
       };
       console.log(`📤 Sending response (${elapsed}ms): ${JSON.stringify(response)}`);

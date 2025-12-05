@@ -232,39 +232,43 @@ export default function Booking() {
                                   console.log('🔍 Sending verify request:', payload);
                                   const startTime = Date.now();
                                   
-                                  // Add timeout of 30 seconds
-                                  const res = await Promise.race([
-                                    apiRequest(
-                                      "POST",
-                                      "/api/bookings/verify",
-                                      payload
-                                    ),
-                                    new Promise<Response>((_, reject) =>
-                                      setTimeout(
-                                        () => reject(new Error('Verification request timeout (30s) - server not responding')),
-                                        30000
-                                      )
-                                    ),
-                                  ]);
 
+                                  const res = await apiRequest(
+                                    "POST",
+                                    "/api/bookings/verify",
+                                    payload
+                                  );
                                   const elapsed = Date.now() - startTime;
                                   console.log(`✅ Verify response received in ${elapsed}ms`);
-                                  
                                   const body = await res.json().catch(() => null);
                                   console.log('📦 Response body:', body);
 
-                                  toast({
-                                    title: "Verification code sent",
-                                    description: body?.message || "Check your email for the OTP code",
-                                  });
+                                  // If email wasn't sent (SMTP issue), show a destructive notice and helpful next steps
+                                  if (body && body.emailSent === false) {
+                                    toast({
+                                      title: "Verification email failed",
+                                      description:
+                                        (body.message || 'Server failed to deliver verification email. Please contact support or try again later.') +
+                                        (body.code ? ` (debug code: ${body.code})` : ''),
+                                      variant: "destructive",
+                                    });
+                                  } else {
+                                    toast({
+                                      title: "Verification code sent",
+                                      description: body?.message || "Check your email for the OTP code",
+                                    });
 
-                                  setVerifyStage("code-sent");
-                                  setIsDialogOpen(true);
+                                    setVerifyStage("code-sent");
+                                    setIsDialogOpen(true);
+                                  }
                                 } catch (err) {
                                   console.error('❌ Verify error:', err);
+                                  // If server included body in thrown ApiError (see apiRequest), show server message
+                                  const serverBody = (err as any)?.body || null;
+                                  const serverMsg = serverBody?.message || serverBody?.error;
                                   toast({
                                     title: "Failed to send verification code",
-                                    description: err instanceof Error ? err.message : "Please check your email address and try again",
+                                    description: serverMsg || (err instanceof Error ? err.message : "Please check your email address and try again"),
                                     variant: "destructive",
                                   });
                                 } finally {
@@ -451,7 +455,6 @@ export default function Booking() {
                         
                         const body = await res.json();
                         console.log('📦 Confirm response:', body);
-
                         if (res.ok) {
                           toast({
                             title: "✅ Email Verified",
@@ -470,9 +473,11 @@ export default function Booking() {
                         }
                       } catch (err) {
                         console.error('❌ Confirm error:', err);
+                        const serverBody = (err as any)?.body || null;
+                        const serverMsg = serverBody?.message || serverBody?.error;
                         toast({
                           title: "❌ Verification Error",
-                          description: err instanceof Error ? err.message : "Failed to verify code - please try again",
+                          description: serverMsg || (err instanceof Error ? err.message : "Failed to verify code - please try again"),
                           variant: "destructive",
                         });
                       } finally {
