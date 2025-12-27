@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
 import {
   ChevronDown,
   ChevronUp,
@@ -47,50 +48,59 @@ export default function Header() {
 
   return (
     <>
-      {/* ---------- TOP HEADER (unchanged desktop) ---------- */}
-      <div className="bg-white border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center text-sm">
-          {/* <div className="text-base font-bold hidden md:block text-primary -translate-x-6">
-            A Ride with Ease and Comfort. Try it...
-          </div> */}
+{/* ---------- TOP HEADER ---------- */}
+<div className="bg-white border-b border-border overflow-x-hidden">
+  <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center text-sm">
+    
+    {/* LEFT SIDE: Email & Phone */}
+    <div className="flex items-center gap-6 text-muted-foreground">
+      
+      {/* Email */}
+      <a
+        href="mailto:booking@moonstonecabs.com"
+        className="flex items-center gap-2 hover:text-primary transition-colors"
+        aria-label="Email Moonstone Cabs"
+      >
+        <Mail className="w-4 h-4" />
+        <span className="text-xs sm:text-sm leading-none truncate">
+          booking@moonstonecabs.com
+        </span>
+      </a>
 
-          <div className="flex items-center gap-6">
-            <Link
-              href="/help"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              Help
-            </Link>
-            <Link
-              href="/support"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              Support
-            </Link>
-            <Link
-              href="/faq"
-              className="text-muted-foreground hover:text-primary transition-colors"
-            >
-              FAQ
-            </Link>
+      {/* Phone (visible only on lg and above) */}
+      <a
+        href="tel:+919536575768"
+        className="hidden lg:flex items-center gap-2 hover:text-primary transition-colors"
+        aria-label="Call Moonstone Cabs"
+      >
+        <Phone className="w-4 h-4" />
+        <span className="text-sm leading-none">
+          +91-9536575768
+        </span>
+      </a>
 
-            <div className="flex gap-3">
-              <a className="text-muted-foreground hover:text-primary">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a className="text-muted-foreground hover:text-primary">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a className="text-muted-foreground hover:text-primary">
-                <Linkedin className="w-4 h-4" />
-              </a>
-              <a className="text-muted-foreground hover:text-primary">
-                <Twitter className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
+
+    {/* RIGHT SIDE: Social Media Icons */}
+    <div className="flex gap-4">
+      <a className="text-muted-foreground hover:text-primary transition-colors">
+        <Facebook className="w-4 h-4" />
+      </a>
+      <a className="text-muted-foreground hover:text-primary transition-colors">
+        <Instagram className="w-4 h-4" />
+      </a>
+      <a className="text-muted-foreground hover:text-primary transition-colors">
+        <Linkedin className="w-4 h-4" />
+      </a>
+      <a className="text-muted-foreground hover:text-primary transition-colors">
+        <Twitter className="w-4 h-4" />
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
 
       {/* ---------- MAIN HEADER ---------- */}
       <motion.header
@@ -103,111 +113,96 @@ export default function Header() {
       >
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
 
-         {/* ---------- LOGO + NAME + TAGLINE ---------- */}
-<Link
-  href="/"
-  onClick={scrollToTop}
-  className="flex items-center gap-2 md:gap-3 flex-shrink-0"
-  aria-label="Moonstone Cabs home"
->
+  {/* ---------- LOGO + NAME + TAGLINE ---------- */}
+  <Link
+    href="/"
+    onClick={scrollToTop}
+    className="flex items-center gap-2 md:gap-3 flex-shrink-0"
+    aria-label="Moonstone Cabs home"
+  >
+    {/* Logo Image */}
+    <img
+      src="logo.png"
+      alt="Moonstone Cabs Logo"
+      className="w-10 h-10 md:w-14 md:h-14 object-contain"
+    />
 
-  {/* Logo Image
-  <img
-    src="logo.png"   // <-- your logo path
-    alt="Moonstone Cabs Logo"
-    className="w-12 h-12 md:w-16 md:h-16 object-contain"
-  /> */}
+   {/* Text Block */}
+<div className="flex flex-col leading-tight">
+  
+  {/* Company Name */}
+  <span className="text-xl md:text-2xl font-extrabold text-primary tracking-wide">
+    MOONSTONE
+  </span>
 
-  {/* Text Block */}
-  <div className="flex flex-col leading-tight min-w-0">
-    
-    {/* Company Name */}
-    <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary truncate">
-      MOONSTONE CABS
-    </span>
+  {/* Tagline */}
+  <span className="hidden md:block text-xs text-muted-foreground font-medium mt-0.5">
+    Ease and Comfort
+  </span>
 
-    {/* Tagline — visible only on desktop */}
-    <span className="hidden md:block text-xs md:text-sm text-primary font-semibold">
-      A Ride with Ease and Comfort. Try it...
-    </span>
+</div>
+
+  </Link>
+
+  {/* ---------- DESKTOP NAVIGATION ---------- */}
+  <nav className="hidden lg:flex items-center gap-8">
+    <Link href="/" onClick={scrollToTop} className="hover:text-primary transition-colors">Home</Link>
+
+    <div className="relative group">
+      <button className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors">
+        Company <ChevronDown className="w-4 h-4" />
+      </button>
+      <div className="absolute hidden group-hover:block bg-white border rounded-md shadow-lg top-full w-56 py-2">
+        {companyLinks.map((link) => (
+          <Link key={link.path} href={link.path} onClick={scrollToTop}>
+            <div className="px-4 py-2 text-sm hover:bg-blue-300">
+              {link.label}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    <div className="relative group">
+      <button className="text-sm font-medium flex items-center gap-1 hover:text-primary transition-colors">
+        Services <ChevronDown className="w-4 h-4" />
+      </button>
+      <div className="absolute hidden group-hover:block bg-white border rounded-md shadow-lg top-full w-64 py-2">
+        {serviceLinks.map((link) => (
+          <Link key={link.path} href={link.path} onClick={scrollToTop}>
+            <div className="px-4 py-2 text-sm hover:bg-blue-300">
+              {link.label}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+
+    <Link href="/clients" className="hover:text-primary transition-colors">Clients</Link>
+    <Link href="/fleets" className="hover:text-primary transition-colors">Fleets</Link>
+    <Link href="/careers" className="hover:text-primary transition-colors">Careers</Link>
+    <Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link>
+  </nav>
+
+  {/* DESKTOP CTA */}
+  <div className="hidden lg:flex items-center gap-4">
+    <Link href="/booking">
+      <Button className="bg-primary text-white px-4 py-2 rounded-md">
+        Book a Taxi
+      </Button>
+    </Link>
   </div>
 
-</Link>
+  {/* ---------- MOBILE MENU BUTTON ---------- */}
+  <button
+    className="lg:hidden"
+    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+  >
+    {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+  </button>
 
+</div>
 
-          {/* ---------- DESKTOP NAVIGATION (unchanged) ---------- */}
-          <nav className="hidden lg:flex items-center gap-8">
-            <Link
-              href="/"
-              onClick={scrollToTop}
-              className={`text-sm font-medium ${
-                location === "/" ? "text-primary" : "text-foreground"
-              }`}
-            >
-              Home
-            </Link>
-
-            {/* Company Dropdown */}
-            <div className="relative group">
-              <button className="text-sm font-medium flex items-center gap-1">
-                Company <ChevronDown className="w-4 h-4" />
-              </button>
-
-              <div className="absolute hidden group-hover:block bg-white border rounded-md shadow-lg mt-2 w-56 py-2">
-                {companyLinks.map((link) => (
-                  <Link key={link.path} href={link.path} onClick={scrollToTop}>
-                    <div className="px-4 py-2 text-sm hover:bg-accent">
-                      {link.label}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Services Dropdown */}
-            <div className="relative group">
-              <button className="text-sm font-medium flex items-center gap-1">
-                Services <ChevronDown className="w-4 h-4" />
-              </button>
-
-              <div className="absolute hidden group-hover:block bg-white border rounded-md shadow-lg mt-2 w-64 py-2">
-                {serviceLinks.map((link) => (
-                  <Link key={link.path} href={link.path} onClick={scrollToTop}>
-                    <div className="px-4 py-2 text-sm hover:bg-accent">
-                      {link.label}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            <Link href="/clients">Clients</Link>
-            <Link href="/fleets">Fleets</Link>
-            <Link href="/careers">Careers</Link>
-            <Link href="/contact">Contact Us</Link>
-          </nav>
-
-          {/* DESKTOP CTA */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/booking">
-              <Button className="bg-primary text-white px-4 py-2 text-sm sm:text-base rounded-md">Book a Taxi</Button>
-            </Link>
-
-            {/* phone link visible only on xl to avoid layout issues */}
-            <a href="tel:+919536575768" className="hidden xl:flex items-center gap-2 text-primary" aria-label="Call Moonstone Cabs">
-              <Phone className="w-5 h-5" />
-              <span className="text-sm">+91-9536575768</span>
-            </a>
-          </div>
-
-          {/* ---------- MOBILE MENU BUTTON ---------- */}
-          <button
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
 
         {/* ---------- MOBILE MENU ---------- */}
         <AnimatePresence>

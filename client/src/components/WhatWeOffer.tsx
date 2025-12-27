@@ -70,7 +70,7 @@ export default function WhatWeOffer() {
             What We Offer
           </h2>
           <p className="text-base sm:text-lg text-gray-600">
-            Start your journey with Moonstone Taxi Company!
+            Start your journey with Moonstone
           </p>
           <p className="text-sm sm:text-base text-gray-500 max-w-2xl mx-auto mt-2">
             We handle every ride with precision, reliability, and a premium travel experience.
@@ -78,10 +78,10 @@ export default function WhatWeOffer() {
         </motion.div>
 
         {/* Carousel */}
-        <div className="relative">
-          <div className="overflow-hidden">
+        <div className="relative overflow-hidden">
+          <div className="overflow-hidden w-full">
             <motion.div
-              className="flex gap-6 sm:gap-8"
+              className="flex gap-4 sm:gap-6 lg:gap-8"
               animate={{ x: `-${currentIndex * (100 / itemsPerView)}%` }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >

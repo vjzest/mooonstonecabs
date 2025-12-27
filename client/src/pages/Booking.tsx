@@ -121,19 +121,15 @@ export default function Booking() {
       {/* ⭐ HERO SECTION (with topRef fix) */}
       <section
         ref={topRef}
-        className="relative h-[320px] bg-cover bg-center flex items-center justify-center"
-        style={{
-          backgroundImage: "url('/assets/fleet-banner.jpg')",
-        }}
+        className="relative h-[150px] bg-cover bg-center flex items-center justify-center"
+       
       >
-        <div className="absolute inset-0 bg-black/40" />
-
         <div className="relative z-10 text-center px-4">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={topInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-3"
           >
             Book Your Ride
           </motion.h1>
@@ -142,17 +138,16 @@ export default function Booking() {
             initial={{ opacity: 0, y: 20 }}
             animate={topInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
+            className="text-base sm:text-lg md:text-xl text-gray-500 max-w-2xl mx-auto"
           >
             Quick • Simple • Reliable • 24/7 Booking Available
           </motion.p>
         </div>
       </section>
 
-      <Breadcrumb items={[{ label: "Booking" }]} />
-
+  
       {/* ⭐ MAIN BOOKING FORM */}
-      <section ref={ref} className="py-12 bg-background">
+      <section ref={ref} className="bg-background">
         <div className="max-w-4xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -495,7 +490,7 @@ export default function Booking() {
           </motion.div>
 
           {/* INFO CARDS */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
+          <div className="grid md:grid-cols-3 gap-6 m-12">
             {[
               {
                 title: "24/7 Support",

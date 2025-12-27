@@ -36,7 +36,7 @@ export default function Contact() {
 {/* 📨 Contact Info + Form Section (below Map) */}
 
 <section
-  className="py-20 bg-cover bg-center bg-no-repeat relative"
+  className="py-12 sm:py-16 md:py-20 bg-cover bg-center bg-no-repeat relative overflow-hidden"
   style={{
     backgroundImage: "url('/assets/cta-map.png')",
   }}
@@ -45,31 +45,31 @@ export default function Contact() {
   {/* Optional dark overlay for better text visibility */}
   <div className="absolute inset-0 "></div>
 
-  <div className="relative max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
+  <div className="relative max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
     
     {/* LEFT SIDE — Info */}
 <div className="text-black">
-  <h2 className="text-3xl font-bold mb-4">Have Any Questions?</h2>
-  <p className="mb-8 text-gray-600">
+  <h2 className="text-2xl sm:text-3xl font-bold mb-4">Have Any Questions?</h2>
+  <p className="mb-6 sm:mb-8 text-sm sm:text-base text-gray-600">
     Get in touch to discuss your travel needs. Call us, drop an email, or fill out the contact form.
   </p>
 
-  <div className="space-y-6">
+  <div className="space-y-4 sm:space-y-6">
 
     {/* LOCATION */}
-    <div className="flex items-start space-x-4">
-      <div className="bg-[#1d64fe]/20 p-3 rounded-md">
-        <MapPin className="w-6 h-6 text-[#0349df]" />
+    <div className="flex items-start space-x-3 sm:space-x-4">
+      <div className="bg-[#1d64fe]/20 p-2 sm:p-3 rounded-md flex-shrink-0">
+        <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-[#0349df]" />
       </div>
-      <p>KH. NO. 45/18, Chhawla, Najafgarh, South West Delhi, New Delhi – 110043</p>
+      <p className="text-sm sm:text-base">KH. NO. 45/18, Chhawla, Najafgarh, South West Delhi, New Delhi – 110043</p>
     </div>
 
     {/* EMAIL */}
-    <div className="flex items-start space-x-4">
-      <div className="bg-[#1d64fe]/20 p-3 rounded-md">
-        <Mail className="w-6 h-6 text-[#0349df]" />
+    <div className="flex items-start space-x-3 sm:space-x-4">
+      <div className="bg-[#1d64fe]/20 p-2 sm:p-3 rounded-md flex-shrink-0">
+        <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-[#0349df]" />
       </div>
-      <div>
+      <div className="text-sm sm:text-base">
         <p>contact@moonstonecabs.com</p>
         <p>booking@moonstonecabs.com</p>
         <p>sales@moonstonecabs.com</p>
@@ -77,11 +77,11 @@ export default function Contact() {
     </div>
 
     {/* PHONE */}
-    <div className="flex items-start space-x-4">
-      <div className="bg-[#1d64fe]/20 p-3 rounded-md">
-        <Phone className="w-6 h-6 text-[#0349df]" />
+    <div className="flex items-start space-x-3 sm:space-x-4">
+      <div className="bg-[#1d64fe]/20 p-2 sm:p-3 rounded-md flex-shrink-0">
+        <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-[#0349df]" />
       </div>
-      <div>
+      <div className="text-sm sm:text-base">
         <p>(+91) 9536575768</p>
         <p>(+91) 9990800718</p>
       </div>
@@ -92,7 +92,7 @@ export default function Contact() {
 
 
     {/* RIGHT SIDE — Contact Form placeholder. ContactForm component is rendered below */}
-    <div className="rounded-lg bg-white/40 p-6 backdrop-blur-sm shadow-inner">
+    <div className="rounded-lg bg-white/40 p-4 sm:p-6 backdrop-blur-sm shadow-inner">
       <ContactForm />
     </div>
 
@@ -101,36 +101,6 @@ export default function Contact() {
 
 
 
-
-
-    <section ref={ref} className="py-20 bg-gradient-to-r from-[#1d64fe] to-[#5eb8f4]">
-  <div className="max-w-6xl mx-auto px-6 text-center text-black">
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8 }}
-      className="rounded-2xl shadow-2xl p-10 md:p-14 bg-white/10 backdrop-blur-sm"
-    >
-      <h2 className="text-3xl md:text-4xl font-extrabold mb-4 tracking-wide">
-        Ready to Book Your Ride?
-      </h2>
-
-      <p className="text-lg md:text-xl mb-8 text-white/90">
-        Enjoy a smooth, reliable, and premium taxi experience with{" "}
-        <span className="font-semibold text-yellow-300">Moonstone Cabs</span>.
-      </p>
-
-      <a href="/booking">
-        <button
-          className="bg-white text-blue-600 hover:bg-[#deecff] px-10 py-4 rounded-lg font-semibold text-lg shadow-md transition-all duration-300  "
-          data-testid="button-contact-book"
-        >
-          Book Your Taxi Now
-        </button>
-      </a>
-    </motion.div>
-  </div>
-</section>
 
 
       <Footer />

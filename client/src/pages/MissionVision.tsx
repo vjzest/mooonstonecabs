@@ -50,28 +50,7 @@ export default function MissionVision() {
 
       {/* 🔸 Mission Section */}
       <section ref={missionRef} className="py-5 bg-gradient-to-br from-background to-accent/10">
-       <section
-        className="relative h-[300px] bg-cover bg-center flex flex-col items-center justify-center text-center"
-      >
-        <div className="relative z-10 px-4">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={isMissionInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl font-bold text-primary mb-3"
-          >
-          Our Mission
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isMissionInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto"
-          >
-            Diven to provide safe, reliable, and comfortable travel experiences through technology-driven cab services that reflect calmness, clarity, and trust — inspired by the Moonstone gemstone.
-          </motion.p>
-        </div>
-      </section>
+       
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left - Icon Animation */}
           <motion.div
@@ -198,52 +177,7 @@ export default function MissionVision() {
         </div>
       </section>
 
-      {/* 🔶 Why Choose Us */}
-      <section className="py-20 bg-[#1d77fe] text-white">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Why Choose Moonstone Cabs?</h2>
-          <p className="max-w-3xl mx-auto text-lg opacity-90 mb-10">
-            We go beyond transportation — delivering reliability, comfort, and innovation at every step.
-          </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: <Globe className="w-10 h-10 mx-auto mb-4" />, text: 'Pan India Service Network' },
-              { icon: <ShieldCheck className="w-10 h-10 mx-auto mb-4" />, text: '100% Safety & Verified Drivers' },
-              { icon: <Star className="w-10 h-10 mx-auto mb-4" />, text: 'Top Rated by Our Customers' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: i * 0.2 }}
-                className="bg-white/10 p-6 rounded-xl backdrop-blur-sm hover:bg-white/20 transition"
-              >
-                {item.icon}
-                <p className="font-medium">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 🟢 Final CTA */}
-      <section className="py-16 bg-gray-100 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-          Ready to Move with Moonstone?
-        </h2>
-        <p className="text-lg text-muted-foreground mb-8">
-          Experience rides that combine trust, comfort, and innovation — anytime, anywhere.
-        </p>
-        <a href="/booking">
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className="px-8 py-3 bg-primary text-white font-semibold rounded-lg shadow hover:bg-primary/90 transition"
-        >
-          Book Your Ride Now
-        </motion.button>
-        </a>
-      </section>
-
+    
       <Footer />
     </div>
   );

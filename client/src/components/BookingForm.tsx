@@ -1,130 +1,82 @@
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export default function BookingForm() {
+export default function BookingCTA() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section id="booking" ref={ref} className="relative py-16 overflow-hidden">
-
+    <section
+      ref={ref}
+      className="relative py-6 sm:py-8 bg-black overflow-hidden mb-8"
+    >
       {/* Background Image */}
-      <div className="absolute inset-0 bg-black">
-        <div
-          className="absolute inset-0 bg-[url('/assets/taxi-yellow.png')]
-          bg-cover bg-bottom opacity-20"
-        />
-      </div>
+      <div className="absolute inset-0 bg-[url('/assets/taxi-yellow.png')] bg-cover bg-center opacity-15" />
+      <div className="absolute inset-0 bg-black/50" />
 
-      {/* Luxury Golden Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-black/80 to-primary/10" />
-
-      {/* Soft Glow Lights */}
-      <div className="absolute left-20 top-1/3 w-60 h-60 bg-primary/20 blur-[150px] rounded-full"></div>
-      <div className="absolute right-10 top-1/4 w-52 h-52 bg-yellow-500/10 blur-[120px] rounded-full"></div>
-
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
-
-        {/* Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-14"
-        >
-          <h2 className="text-4xl md:text-5xl font-extrabold text-primary tracking-wide drop-shadow-lg">
-            Premium Taxi Booking
-          </h2>
-
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-32 h-[3px] bg-primary mx-auto mt-3 rounded-full origin-center"
-          />
-
-          <p className="text-gray-300 mt-3 text-base">
-            Luxury • Comfort • Safety • 24/7 Availability
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+      <div className="relative z-10 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
           {/* LEFT — IMAGE */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.7 }}
-            className="hidden md:flex items-end justify-center"
+            className="flex justify-center"
           >
             <img
               src="/assets/cta-men2.png"
-              alt="Booking Taxi"
-              className="w-[60%] max-w-xl drop-shadow-2xl rounded-xl -translate-x-20"
+              alt="Premium Taxi Service"
+              className="w-[65%] max-w-sm drop-shadow-2xl"
             />
           </motion.div>
 
-          {/* RIGHT — PREMIUM HIGHLIGHTS */}
+          {/* RIGHT — CONTENT */}
           <motion.div
-            initial={{ opacity: 0, x: 70 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="bg-white/10 backdrop-blur-xl border border-white/20 
-            rounded-2xl p-6 sm:p-8 shadow-2xl text-white"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            className="text-center lg:text-left"
           >
-            <h3 className="text-xl sm:text-2xl font-bold mb-6 text-primary drop-shadow-md">
-              Why Choose Our Premium Ride?
-            </h3>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-primary leading-tight">
+              Book a Taxi <br className="hidden sm:block" />
+              <span className="text-white">in Minutes, Ride in Comfort</span>
+            </h2>
 
-            {/* FEATURE GRID */}
-            <div className="grid grid-cols-1 gap-4 sm:gap-5">
+            <p className="mt-4 text-gray-300 text-sm sm:text-base max-w-xl mx-auto lg:mx-0">
+              Reliable, luxury taxi services across Delhi & NCR.  
+              Professional drivers, clean cars, on-time pickup — always.
+            </p>
 
-              {/* CARD 1 */}
-              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-base sm:text-lg font-semibold">🚖 Instant Booking</h4>
-                <p className="text-gray-300 text-xs sm:text-sm mt-1">
-                  Get your taxi confirmed within seconds.
-                </p>
-              </div>
-
-              {/* CARD 2 */}
-              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-base sm:text-lg font-semibold">🛡 Verified Drivers</h4>
-                <p className="text-gray-300 text-xs sm:text-sm mt-1">
-                  Only trained and trusted drivers on duty.
-                </p>
-              </div>
-
-              {/* CARD 3 */}
-              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-base sm:text-lg font-semibold">💺 Luxury Comfort</h4>
-                <p className="text-gray-300 text-xs sm:text-sm mt-1">
-                  Super-clean AC cars with smooth rides.
-                </p>
-              </div>
-
-              {/* CARD 4 */}
-              <div className="p-4 sm:p-5 bg-white/5 rounded-xl border border-white/10 hover:bg-primary/20 transition-all">
-                <h4 className="text-base sm:text-lg font-semibold">⏱ On-Time Guarantee</h4>
-                <p className="text-gray-300 text-xs sm:text-sm mt-1">
-                  Your time matters — no delays, no excuses.
-                </p>
-              </div>
-
+            {/* TRUST POINTS */}
+            <div className="mt-5 flex flex-wrap justify-center lg:justify-start gap-3 text-xs sm:text-sm text-gray-200">
+              <span className="bg-white/10 px-3 py-1.5 rounded-full">✔ 24/7 Service</span>
+              <span className="bg-white/10 px-3 py-1.5 rounded-full">✔ Verified Drivers</span>
+              <span className="bg-white/10 px-3 py-1.5 rounded-full">✔ Premium Cars</span>
             </div>
 
-            {/* BUTTON */}
-            <a href="/booking">
-            <Button
-              className="w-full mt-8 py-3 text-lg font-bold bg-primary hover:bg-primary/90
-              text-white rounded-xl shadow-xl hover:scale-[1.02] transition-all"
-            >
-              Book Your Taxi
-            </Button>
-</a>
+            {/* CTA BUTTONS */}
+            <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <a href="/booking">
+                <Button className="px-6 py-3 text-base font-bold bg-primary hover:bg-primary/90 rounded-full shadow-lg">
+                  Book Your Taxi
+                </Button>
+              </a>
+
+              <a
+                href="tel:+91-9536575768"
+                className="flex items-center justify-center gap-3 px-6 py-3 rounded-full
+                border border-primary text-primary hover:bg-primary hover:text-white
+                transition font-semibold text-sm"
+              >
+                <Phone className="w-4 h-4" />
+                Call Now
+              </a>
+            </div>
           </motion.div>
+
         </div>
       </div>
     </section>

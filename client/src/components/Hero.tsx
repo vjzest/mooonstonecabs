@@ -28,17 +28,17 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-[600px] md:h-[700px] overflow-hidden">
+    <section className="relative h-[500px] md:h-[600px] overflow-hidden">
 
       {/* Background Carousel */}
       <div className="absolute inset-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{ duration: 0.6 }}
             className="absolute inset-0"
           >
             <img
@@ -79,8 +79,7 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="text-lg md:text-xl text-gray-300"
             >
-              Experience luxury, comfort, and punctuality with Moonstone Cabs — 
-              your reliable partner for every journey.
+              Experience unmatched luxury, comfort, and punctuality with Moonstone Cabs — your trusted partner for every journey.
             </motion.p>
 
             <motion.div
@@ -91,7 +90,7 @@ export default function Hero() {
               <a href="/booking">
                 <Button
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-5 py-4"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-5 py-4 "
                 >
                   Book Your Ride Now
                 </Button>
@@ -101,28 +100,28 @@ export default function Hero() {
 
          
         <motion.div
-  initial={{ opacity: 0, x: 300 }}   // right se bahar
-  animate={{ opacity: 1, x: 0 }}     // smooth slide in
+  initial={{ opacity: 0, y: 100 }}
+  animate={{ opacity: 1, y: 0 }}
   transition={{
-    duration: 1.2,
+    duration: 1,
     delay: 0.3,
-    ease: [0.25, 0.1, 0.25, 1],      // smooth easing
+    ease: [0.25, 0.1, 0.25, 1],
   }}
-  className="hidden lg:flex justify-center items-center"
+  className="hidden lg:flex justify-center items-center -mt-20"
 >
   <div className="relative">
     <motion.div
       className="absolute -inset-4 bg-primary/10 rounded-full blur-3xl"
-      animate={{ scale: [1, 1.1, 1] }}
-      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      animate={{ scale: [1, 1.05, 1] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
     />
     <motion.img
       src={carImage}
       alt="Luxury Rolls Royce"
-       className="relative w-[550px] xl:w-[620px] drop-shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
+      className="relative w-[450px] xl:w-[580px] drop-shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
       initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
-      transition={{ duration: 1.2, delay: 0.5 }}
+      transition={{ duration: 1, delay: 0.5 }}
     />
   </div>
 </motion.div>

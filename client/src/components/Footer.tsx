@@ -24,10 +24,16 @@ export default function Footer() {
 
           {/* ---------- Company Info ---------- */}
           <div className="text-center sm:text-left">
-            <div className="text-2xl font-bold text-primary mb-3">MOONSTONE CABS</div>
+            <div className="flex items-center gap-3 justify-center sm:justify-start mb-3">
+              <img
+                src="logo.png"
+                alt="Moonstone Cabs Logo"
+                className="w-10 h-10 object-contain"
+              />
+              <div className="text-2xl font-bold text-primary">MOONSTONE CABS</div>
+            </div>
             <p className="text-gray-300 text-sm leading-relaxed max-w-md mx-auto sm:mx-0">
-              Your trusted partner for luxury taxi services and car rentals in Delhi & NCR.
-            </p>
+           Your trusted partner for luxury taxi services and premium car rentals in Delhi & NCR.  </p>
           </div>
 
           {/* ---------- Useful Links ---------- */}

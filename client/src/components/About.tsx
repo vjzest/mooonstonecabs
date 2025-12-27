@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
 import { useRef } from 'react';
-import fleetImage1 from '@assets/stock_images/abus-pic.jpg';
-import fleetImage2 from '@assets/stock_images/car-pic1.png';
+import fleetImage1 from '@assets/stock_images/car-image.jpg';
+
 
 export default function About() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section ref={ref} className="py-14 sm:py-16 md:py-20 bg-background">
+    <section ref={ref} className="py-8 sm:py-10 md:py-12 bg-background">
       <div className="max-w-7xl mx-auto px-4">
 
         {/* Heading */}
@@ -22,7 +22,7 @@ export default function About() {
           About Our Company
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
 
           {/* Left Side Images */}
           <motion.div
@@ -40,14 +40,6 @@ export default function About() {
               />
             </div>
 
-            {/* SECOND IMAGE (desktop only) */}
-            <div className="hidden lg:block absolute bottom-[-70px] left-4 w-[105%] shadow-xl rounded-2xl overflow-hidden">
-              <img
-                src={fleetImage2}
-                alt="Professional Service"
-                className="w-auto h-60 object-cover rounded-2xl"
-              />
-            </div>
           </motion.div>
 
           {/* Right Side Text Section */}
@@ -55,7 +47,7 @@ export default function About() {
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-5 sm:space-y-6 mt-4 lg:mt-0"
+            className="space-y-5 sm:space-y-6 mt-0 lg:mt-0"
           >
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -66,6 +58,7 @@ export default function About() {
               Moonstone Cabs Private Limited is one of the most reputable and 
               leading car rental companies in Delhi & NCR. Our growth is driven 
               by the trust and satisfaction of our valued clients.
+              
             </motion.p>
 
             <motion.p
