@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import heroImage1 from '@assets/stock_images/luxury_black_taxi_ca_fdc1538a.jpg';
-import heroImage2 from '@assets/stock_images/luxury_black_taxi_ca_7b032548.jpg';
-import carImage from '/assets/car1.png';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import heroImage1 from "@assets/stock_images/luxury_black_taxi_ca_fdc1538a.jpg";
+import heroImage2 from "@assets/stock_images/luxury_black_taxi_ca_7b032548.jpg";
+import carImage from "/assets/car1.png";
 
 const images = [heroImage1, heroImage2];
 
@@ -20,7 +21,9 @@ export default function Hero() {
   }, []);
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentIndex(
+      (prev) => (prev - 1 + images.length) % images.length
+    );
   };
 
   const goToNext = () => {
@@ -28,124 +31,116 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative h-[500px] md:h-[600px] overflow-hidden">
+    <section className="relative h-[500px] md:h-[600px] overflow-hidden bg-black">
 
-      {/* Background Carousel */}
+      {/* ================= Background Carousel ================= */}
       <div className="absolute inset-0">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className="absolute inset-0"
           >
             <img
               src={images[currentIndex]}
-              alt="Hero background"
+              alt="Hero Background"
               className="w-full h-full object-cover"
             />
 
-            {/* Soft dark overlay */}
+            {/* Dark overlay (prevents white flash) */}
             <div className="absolute inset-0 bg-black/50" />
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 h-full relative z-10">
+      {/* ================= Main Content ================= */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 h-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
 
-          {/* Left Side Content */}
+          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
-            >
-              A Ride with Ease and Comfort. Try it... 
-            </motion.h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              A Ride with Ease and Comfort. Try it...
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-lg md:text-xl text-gray-300"
-            >
-              Experience unmatched luxury, comfort, and punctuality with Moonstone Cabs — your trusted partner for every journey.
-            </motion.p>
+            <p className="text-lg md:text-xl text-gray-300">
+              Experience unmatched luxury, comfort, and punctuality with
+              Moonstone Cabs — your trusted partner for every journey.
+            </p>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <a href="/booking">
-                <Button
-                  size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-5 py-4 "
-                >
-                  Book Your Ride Now
-                </Button>
-              </a>
-            </motion.div>
+            <a href="/booking">
+  <Button
+    className="
+      bg-primary hover:bg-primary/90 text-primary-foreground
+      text-base sm:text-lg
+      px-4 py-2 sm:px-4 sm:py-3
+      rounded-xl
+      transition-all mt-8
+    "
+  >
+    Book Your Ride Now
+  </Button>
+</a>
+
           </motion.div>
 
-         
-        <motion.div
-  initial={{ opacity: 0, y: 100 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{
-    duration: 1,
-    delay: 0.3,
-    ease: [0.25, 0.1, 0.25, 1],
-  }}
-  className="hidden lg:flex justify-center items-center -mt-20"
->
-  <div className="relative">
-    <motion.div
-      className="absolute -inset-4 bg-primary/10 rounded-full blur-3xl"
-      animate={{ scale: [1, 1.05, 1] }}
-      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-    />
-    <motion.img
-      src={carImage}
-      alt="Luxury Rolls Royce"
-      className="relative w-[450px] xl:w-[580px] drop-shadow-[0_15px_40px_rgba(0,0,0,0.6)]"
-      initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 1, delay: 0.5 }}
-    />
-  </div>
-</motion.div>
+          {/* Right Car Image */}
+          <motion.div
+            initial={{ opacity: 0, y: 80 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="hidden lg:flex justify-center -mt-20"
+          >
+            <div className="relative">
+              <motion.div
+                className="absolute -inset-6 bg-primary/10 rounded-full blur-3xl"
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
 
+              <motion.img
+                src={carImage}
+                alt="Luxury Car"
+                className="relative w-[450px] xl:w-[580px] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+              />
+            </div>
+          </motion.div>
 
         </div>
       </div>
 
-      {/* Carousel Controls */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-20">
+      {/* ================= Controls ================= */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+
         <button
           onClick={goToPrevious}
-          className="bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-all"
+          className="bg-black/40 hover:bg-black/60 text-white p-2 rounded-full"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
 
-        <div className="flex gap-2 items-center">
+        {/* Indicators */}
+        <div className="flex gap-2">
           {images.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
               className={`h-2 rounded-full transition-all ${
-                index === currentIndex ? 'w-8 bg-primary' : 'w-2 bg-black/40'
+                index === currentIndex
+                  ? "w-8 bg-primary"
+                  : "w-2 bg-white/40"
               }`}
             />
           ))}
@@ -153,12 +148,12 @@ export default function Hero() {
 
         <button
           onClick={goToNext}
-          className="bg-black/40 hover:bg-black/60 text-white p-2 rounded-full transition-all"
+          className="bg-black/40 hover:bg-black/60 text-white p-2 rounded-full"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
-      </div>
 
+      </div>
     </section>
   );
 }

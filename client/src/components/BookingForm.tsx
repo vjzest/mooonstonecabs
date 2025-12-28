@@ -19,12 +19,12 @@ export default function BookingCTA() {
       <div className="relative z-10 max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
-          {/* LEFT — IMAGE */}
+          {/* LEFT — IMAGE (HIDDEN ON MOBILE) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.7 }}
-            className="flex justify-center"
+            className="hidden lg:flex justify-center"
           >
             <img
               src="/assets/cta-men2.png"
@@ -60,14 +60,14 @@ export default function BookingCTA() {
             {/* CTA BUTTONS */}
             <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <a href="/booking">
-                <Button className="px-6 py-3 text-base font-bold bg-primary hover:bg-primary/90 rounded-full shadow-lg">
+                <Button className="px-6 py-3 text-base font-bold bg-primary hover:bg-primary/90 rounded-lg shadow-lg">
                   Book Your Taxi
                 </Button>
               </a>
 
               <a
                 href="tel:+91-9536575768"
-                className="flex items-center justify-center gap-3 px-6 py-3 rounded-full
+                className="flex items-center justify-center gap-3 px-6 py-3 rounded-lg
                 border border-primary text-primary hover:bg-primary hover:text-white
                 transition font-semibold text-sm"
               >
