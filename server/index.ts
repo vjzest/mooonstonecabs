@@ -1,7 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
 dotenv.config();
-import mongoose from "mongoose";
 import cors from "cors";
 import { registerRoutes } from "./routes";
 
@@ -22,11 +21,12 @@ declare module "http" {
 // ---------------------- FIXED CORS ----------------------
 const ALLOWED_ORIGINS = [
   "https://moonstone-cabs.vercel.app",       // Vercel frontend (production)
-  "https://moonstonecabs.onrender.com",      // Render backend internal requests
+  "https://moonstonecabs.vercel.app",        // Alternative Vercel URL
   "http://localhost:5173",                   // Local Vite
   "http://127.0.0.1:5173",
   "http://localhost:3000",                   // Local Next.js
   "http://127.0.0.1:3000",
+  "http://localhost:5000",                   // Local Express dev
 ];
 
 app.use(
@@ -82,26 +82,22 @@ app.use((req, res, next) => {
 
 // ---------------- SERVER INIT ----------------
 (async () => {
-  const mongoUri = process.env.MONGODB_URI;
-
-  if (mongoUri) {
-    try {
-      await mongoose.connect(mongoUri);
-      log("✅ Connected to MongoDB");
-    } catch (err) {
-      console.error("❌ Failed to connect to MongoDB:", err);
-    }
+  let server;
+  try {
+    server = await registerRoutes(app);
+  } catch (routeError) {
+    console.error("❌ Error registering routes:", routeError);
+    console.log("⚠️  Server may have limited functionality");
+    // Create a basic HTTP server anyway
+    const { createServer } = await import("http");
+    server = createServer(app);
   }
-
-  const server = await registerRoutes(app);
 
   // Health check
   app.get("/", (_req, res) => {
     res
       .status(200)
-      .send(
-        "<h1>Moonstone Cabs API</h1><p>Server is running successfully.</p>"
-      );
+      .json({ ok: true, message: "🚗 Moonstone Cabs API - Supabase Edition" });
   });
 
   // Error handler

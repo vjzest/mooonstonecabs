@@ -5,7 +5,6 @@ import { insertBookingSchema, insertAdminSchema, updateBookingStatusSchema, inse
 import { z } from "zod";
 import nodemailer from "nodemailer";
 import { scryptSync, randomBytes } from "crypto";
-import mongoose from 'mongoose';
 
 // Password hashing helper
 function hashPassword(password: string): string {
@@ -21,9 +20,7 @@ function verifyPassword(password: string, hash: string): boolean {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Dynamically import storage so that dotenv and mongoose connection
-  // have been initialized in `index.ts` before storage decides which
-  // backend to use (Mongo vs in-memory).
+  // Initialize storage (Supabase or in-memory fallback)
   const { initStorage } = await import("./storage");
   const storage = await initStorage();
   // Configure nodemailer transporter using environment variables
@@ -58,25 +55,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Use the authenticated email as the default from address (reduces spam filtering)
   const defaultFrom = process.env.EMAIL_FROM || process.env.EMAIL_USER || 'noreply@moonstonecabs.com';
 
-  // Initialize default admin if not exists
-  const defaultAdmin = await storage.getAdminByEmail("admin@moonstonecabs.com");
-  if (!defaultAdmin) {
-    await storage.createAdmin({
-      email: "admin@moonstonecabs.com",
-      password: hashPassword("admin123"),
-    });
+  // Initialize default admin if not exists (with error handling)
+  try {
+    const defaultAdmin = await storage.getAdminByEmail("admin@moonstonecabs.com");
+    if (!defaultAdmin) {
+      await storage.createAdmin({
+        email: "admin@moonstonecabs.com",
+        password: hashPassword("admin123"),
+      });
+      console.log("✅ Default admin created");
+    } else {
+      console.log("✅ Default admin already exists");
+    }
+  } catch (err) {
+    console.warn("⚠️  Could not initialize default admin:", err instanceof Error ? err.message : err);
+    console.warn("⚠️  Running with in-memory storage fallback");
   }
 
   // In-memory verification stores (shared): contact and booking
   const contactVerifications = new Map<string, { code: string; payload: any; expiresAt: number; attempts: number; verified?: boolean }>();
   const bookingVerifications = new Map<string, { code: string; payload: any; expiresAt: number; attempts: number; verified?: boolean }>();
-
-  // Helper: detect database connectivity / TLS / topology errors so we can return clearer responses
+  // Helper: detect database connectivity errors
   function isDbError(err: any) {
     if (!err) return false;
     const name = String(err.name || "");
     const message = String(err.message || "").toLowerCase();
-    return name.toLowerCase().includes("mongo") || message.includes("topology") || message.includes("tls") || message.includes("ssl") || message.includes("serverselection");
+    return message.includes("connection") || message.includes("timeout") || message.includes("database");
   }
 
   // ============ ADMIN ROUTES ============
@@ -321,8 +325,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
               </ul>
               
               <p>If you have any questions, please contact us:</p>
-              <p>📞 +91-9990800718 | +91-9536575768</p>
+              <p>📞 +91-9536575768 | +91-9990800718</p>
               <p>📧 booking@moonstonecabs.com</p>
+              <p> Regards,<br/>Moonstone Cabs Team</p>
+              
             </div>
             <div class="footer">
               <p>© ${new Date().getFullYear()} Moonstone Cabs Pvt. Ltd. All rights reserved.</p>
@@ -703,8 +709,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/debug/storage', (_req, res) => {
     try {
       const storageType = storage?.constructor?.name || 'unknown';
-      const mongooseState = (mongoose && mongoose.connection && typeof mongoose.connection.readyState === 'number') ? mongoose.connection.readyState : 'unknown';
-      res.json({ success: true, storageType, mongooseState });
+      res.json({ success: true, storageType, database: 'supabase-postgresql' });
     } catch (err) {
       console.error('Debug storage endpoint error:', err);
       res.status(500).json({ success: false, error: 'Failed to inspect storage' });
