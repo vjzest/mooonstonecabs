@@ -98,6 +98,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     return message.includes("connection") || message.includes("timeout") || message.includes("database");
   }
 
+  // ============ DEBUG ROUTES ============
+  
+  // Test email endpoint - verify SMTP works
+  app.post("/api/test-email", async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ success: false, error: "Email required" });
+      }
+      
+      console.log(`🧪 Testing email send to ${email}...`);
+      console.log(`📋 Config: user=${process.env.EMAIL_USER}, pass=${process.env.EMAIL_PASS ? 'SET' : 'NOT SET'}`);
+      
+      const testResult = await sendMailSafe({
+        from: `"Moonstone Cabs" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: '🧪 Moonstone Cabs - Test Email',
+        html: `<p>This is a test email to verify SMTP configuration is working properly.</p><p>If you see this, email sending is ✅ working!</p>`
+      });
+      
+      if (testResult) {
+        return res.json({ success: true, message: "✅ Test email sent successfully!" });
+      } else {
+        return res.status(500).json({ success: false, message: "❌ Email send failed - check server logs for details" });
+      }
+    } catch (err) {
+      console.error("Test email error:", err);
+      res.status(500).json({ success: false, error: err instanceof Error ? err.message : String(err) });
+    }
+  });
+
   // ============ ADMIN ROUTES ============
 
   // Admin Login
