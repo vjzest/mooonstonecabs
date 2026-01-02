@@ -23,33 +23,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize storage (Supabase or in-memory fallback)
   const { initStorage } = await import("./storage");
   const storage = await initStorage();
-  
-  // Configure nodemailer transporter for Gmail
-  // Gmail requires:
-  // 1. App-specific password (not regular password)
-  // 2. Port 587 with secure: false OR port 465 with secure: true
+  // Configure nodemailer transporter using environment variables
   const transporter = nodemailer.createTransport({
-    service: 'gmail',  // Use Gmail service directly
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 587,
+    secure: false,
     auth: {
       user: process.env.EMAIL_USER || 'noreply@moonstonecabs.com',
       pass: process.env.EMAIL_PASS || '',
     },
   });
 
-  // Test SMTP connection on startup
-  transporter.verify((error: any, success: any) => {
-    if (error) {
-      console.error('❌ Email transporter verification failed:', error.message);
-    } else {
-      console.log('✅ Email transporter ready - SMTP connection successful');
-    }
-  });
-
   // Safe send helper — catches errors so a failed email does not crash the request
   async function sendMailSafe(mailOptions: any) {
     try {
       console.log(`📤 Attempting to send email to ${mailOptions.to}...`);
-      console.log(`📋 Email User: ${process.env.EMAIL_USER}`);
       const result = await Promise.race([
         transporter.sendMail(mailOptions),
         new Promise((_, reject) => 
@@ -59,10 +47,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`✅ Email sent successfully to ${mailOptions.to}`);
       return true;
     } catch (e) {
-      const errorMsg = e instanceof Error ? e.message : String(e);
-      const errorStack = e instanceof Error ? e.stack : '';
-      console.error(`❌ Email send failed for ${mailOptions.to}:`, errorMsg);
-      console.error(`📍 Error Stack:`, errorStack);
+      console.error(`❌ Email send failed for ${mailOptions.to}:`, e instanceof Error ? e.message : e);
       return false;
     }
   }
@@ -97,37 +82,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const message = String(err.message || "").toLowerCase();
     return message.includes("connection") || message.includes("timeout") || message.includes("database");
   }
-
-  // ============ DEBUG ROUTES ============
-  
-  // Test email endpoint - verify SMTP works
-  app.post("/api/test-email", async (req, res) => {
-    try {
-      const { email } = req.body;
-      if (!email) {
-        return res.status(400).json({ success: false, error: "Email required" });
-      }
-      
-      console.log(`🧪 Testing email send to ${email}...`);
-      console.log(`📋 Config: user=${process.env.EMAIL_USER}, pass=${process.env.EMAIL_PASS ? 'SET' : 'NOT SET'}`);
-      
-      const testResult = await sendMailSafe({
-        from: `"Moonstone Cabs" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: '🧪 Moonstone Cabs - Test Email',
-        html: `<p>This is a test email to verify SMTP configuration is working properly.</p><p>If you see this, email sending is ✅ working!</p>`
-      });
-      
-      if (testResult) {
-        return res.json({ success: true, message: "✅ Test email sent successfully!" });
-      } else {
-        return res.status(500).json({ success: false, message: "❌ Email send failed - check server logs for details" });
-      }
-    } catch (err) {
-      console.error("Test email error:", err);
-      res.status(500).json({ success: false, error: err instanceof Error ? err.message : String(err) });
-    }
-  });
 
   // ============ ADMIN ROUTES ============
 
