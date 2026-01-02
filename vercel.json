@@ -1,15 +1,16 @@
 {
   "version": 2,
+  "buildCommand": "npm install && npm run build",
   "builds": [
     {
-      "src": "server/index.js",
+      "src": "server/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "server/index.js"
+      "src": "/(.*)",
+      "dest": "server/index.ts"
     }
   ]
 }
