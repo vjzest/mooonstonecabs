@@ -23,23 +23,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize storage (Supabase or in-memory fallback)
   const { initStorage } = await import("./storage");
   const storage = await initStorage();
-  // Configure nodemailer transporter using environment variables
-  // For Vercel compatibility, use secure port 465 instead of 587
+  
+  // Configure nodemailer transporter for Gmail
+  // Gmail requires:
+  // 1. App-specific password (not regular password)
+  // 2. Port 587 with secure: false OR port 465 with secure: true
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 465,
-    secure: true,  // Changed to true for port 465
+    service: 'gmail',  // Use Gmail service directly
     auth: {
       user: process.env.EMAIL_USER || 'noreply@moonstonecabs.com',
       pass: process.env.EMAIL_PASS || '',
     },
   });
 
+  // Test SMTP connection on startup
+  transporter.verify((error: any, success: any) => {
+    if (error) {
+      console.error('❌ Email transporter verification failed:', error.message);
+    } else {
+      console.log('✅ Email transporter ready - SMTP connection successful');
+    }
+  });
+
   // Safe send helper — catches errors so a failed email does not crash the request
   async function sendMailSafe(mailOptions: any) {
     try {
       console.log(`📤 Attempting to send email to ${mailOptions.to}...`);
-      console.log(`📋 SMTP Config: host=${process.env.EMAIL_HOST}, port=${process.env.EMAIL_PORT}, user=${process.env.EMAIL_USER}`);
+      console.log(`📋 Email User: ${process.env.EMAIL_USER}`);
       const result = await Promise.race([
         transporter.sendMail(mailOptions),
         new Promise((_, reject) => 
