@@ -39,6 +39,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   async function sendMailSafe(mailOptions: any) {
     try {
       console.log(`📤 Attempting to send email to ${mailOptions.to}...`);
+      console.log(`📋 SMTP Config: host=${process.env.EMAIL_HOST}, port=${process.env.EMAIL_PORT}, user=${process.env.EMAIL_USER}`);
       const result = await Promise.race([
         transporter.sendMail(mailOptions),
         new Promise((_, reject) => 
@@ -48,7 +49,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`✅ Email sent successfully to ${mailOptions.to}`);
       return true;
     } catch (e) {
-      console.error(`❌ Email send failed for ${mailOptions.to}:`, e instanceof Error ? e.message : e);
+      const errorMsg = e instanceof Error ? e.message : String(e);
+      const errorStack = e instanceof Error ? e.stack : '';
+      console.error(`❌ Email send failed for ${mailOptions.to}:`, errorMsg);
+      console.error(`📍 Error Stack:`, errorStack);
       return false;
     }
   }
