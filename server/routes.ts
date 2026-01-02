@@ -24,10 +24,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const { initStorage } = await import("./storage");
   const storage = await initStorage();
   // Configure nodemailer transporter using environment variables
+  // For Vercel compatibility, use secure port 465 instead of 587
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 587,
-    secure: false,
+    port: process.env.EMAIL_PORT ? parseInt(process.env.EMAIL_PORT) : 465,
+    secure: true,  // Changed to true for port 465
     auth: {
       user: process.env.EMAIL_USER || 'noreply@moonstonecabs.com',
       pass: process.env.EMAIL_PASS || '',
