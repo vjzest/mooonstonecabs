@@ -1,53 +1,56 @@
-import express, { type Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import dotenv from "dotenv";
-dotenv.config();
 import cors from "cors";
 import { registerRoutes } from "./routes";
+import { createServer } from "http";
 
-// -------------------- SIMPLE LOG FUNCTION --------------------
-function log(msg: string) {
-  console.log(msg);
-}
-// -------------------------------------------------------------
+dotenv.config();
 
 const app = express();
 
+/* -------------------- RAW BODY -------------------- */
 declare module "http" {
   interface IncomingMessage {
-    rawBody: unknown;
+    rawBody?: Buffer;
   }
 }
 
-// ---------------------- FIXED CORS ----------------------
+/* -------------------- CORS -------------------- */
 const ALLOWED_ORIGINS = [
-  "https://moonstone-cabs.vercel.app",       // Vercel frontend (production)
-  "https://moonstonecabs.vercel.app",        // Alternative Vercel URL
-  "http://localhost:5173",                   // Local Vite
+  "https://moonstone-cabs.vercel.app",
+  "https://moonstonecabs.vercel.app",
+  "https://mooonstonecabs-ls9t.vercel.app",
+  "http://localhost:5173",
   "http://127.0.0.1:5173",
-  "http://localhost:3000",                   // Local Next.js
+  "http://localhost:3000",
   "http://127.0.0.1:3000",
-  "http://localhost:5000",                   // Local Express dev
+  "http://localhost:5000",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true); // allow server-to-server
-      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      if (!origin) return callback(null, true);
 
-      console.warn("❌ CORS BLOCKED ORIGIN:", origin);
-      return callback(new Error("CORS policy: Origin not allowed"));
+      if (
+        ALLOWED_ORIGINS.includes(origin) ||
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
+      console.log("CORS blocked:", origin);
+      return callback(null, false);
     },
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
   })
 );
 
-// FIX OPTIONS ERRORS
 app.options("*", cors());
 
-// ---------------- PARSERS ----------------
+/* -------------------- BODY PARSERS -------------------- */
 app.use(
   express.json({
     verify: (req, _res, buf) => {
@@ -58,58 +61,50 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
-// ---------------- LOGGER ----------------
+/* -------------------- LOGGER -------------------- */
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
-  let bodyJson: any;
-
-  const originalJson = res.json;
-  res.json = function (data) {
-    bodyJson = data;
-    return originalJson.call(this, data);
-  };
 
   res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      log(`${req.method} ${path} ${res.statusCode} in ${duration}ms`);
+    if (req.path.startsWith("/api")) {
+      console.log(
+        `${req.method} ${req.path} ${res.statusCode} - ${Date.now() - start}ms`
+      );
     }
   });
 
   next();
 });
 
-// ---------------- SERVER INIT ----------------
+/* -------------------- SERVER START -------------------- */
 (async () => {
   let server;
+
   try {
     server = await registerRoutes(app);
-  } catch (routeError) {
-    console.error("❌ Error registering routes:", routeError);
-    console.log("⚠️  Server may have limited functionality");
-    // Create a basic HTTP server anyway
-    const { createServer } = await import("http");
+  } catch (err) {
+    console.error("Route register error:", err);
     server = createServer(app);
   }
 
-  // Health check
   app.get("/", (_req, res) => {
-    res
-      .status(200)
-      .json({ ok: true, message: "🚗 Moonstone Cabs API - Supabase Edition" });
+    res.status(200).json({
+      ok: true,
+      message: "Moonstone Cabs API running",
+    });
   });
 
-  // Error handler
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || 500;
-    res.status(status).json({ error: err.message || "Server Error" });
-    console.error("Server Error:", err);
-  });
+  app.use(
+    (err: any, _req: Request, res: Response, _next: NextFunction) => {
+      res.status(err.status || 500).json({
+        error: err.message || "Internal Server Error",
+      });
+    }
+  );
 
-  const port = parseInt(process.env.PORT || "5000");
+  const port = Number(process.env.PORT) || 5000;
 
   server.listen(port, () => {
-    log(`🚀 Server running at http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
   });
 })();
